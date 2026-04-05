@@ -1,0 +1,680 @@
+Aravinf
+Validating 1189 samples...
+
+
+==============================
+MODEL ACCURACY
+==============================
+Accuracy: 0.9462
+
+==============================
+CLASSIFICATION REPORT
+==============================
+                    precision    recall  f1-score   support
+
+content_generation       0.99      0.99      0.99       203
+             doubt       0.90      0.90      0.90       267
+              exit       0.97      1.00      0.99       143
+          feedback       0.99      0.92      0.95       198
+      out_of_scope       0.90      0.94      0.92       260
+             reset       0.99      0.98      0.99       118
+
+          accuracy                           0.95      1189
+         macro avg       0.96      0.95      0.95      1189
+      weighted avg       0.95      0.95      0.95      1189
+
+
+==============================
+CONFUSION MATRIX
+==============================
+[[200   1   0   0   2   0]
+ [  0 239   1   1  26   0]
+ [  0   0 143   0   0   0]
+ [  1  13   1 182   0   1]
+ [  2  12   0   1 245   0]
+ [  0   0   2   0   0 116]]
+
+==============================
+MISCLASSIFIED CASES
+==============================
+Total Misclassified: 64
+
+misclassified prompts
+text:
+the live session recording lacks clear chapter markers
+
+expected :
+feedback
+
+predicted :
+reset
+
+misclassified prompts
+text:
+How does XGBoost handle missing values internally?
+
+expected :
+doubt
+
+predicted :
+out_of_scope
+
+misclassified prompts
+text:
+How do word2vec embeddings capture semantic similarity?
+
+expected :
+doubt
+
+predicted :
+out_of_scope
+
+misclassified prompts
+text:
+How does teacher forcing affect sequence-to-sequence training?
+
+expected :
+doubt
+
+predicted :
+out_of_scope
+
+misclassified prompts
+text:
+What is the difference between a soft prompt and a hard prompt in prompt tuning?
+
+expected :
+doubt
+
+predicted :
+out_of_scope
+
+misclassified prompts
+text:
+Can you help me understand my electricity bill?
+
+expected :
+out_of_scope
+
+predicted :
+feedback
+
+misclassified prompts
+text:
+Here are the notes I made for today class. Does the structure make sense to a beginner?
+
+expected :
+feedback
+
+predicted :
+doubt
+
+misclassified prompts
+text:
+the video script repeats the same concept without adding depth
+
+expected :
+feedback
+
+predicted :
+doubt
+
+misclassified prompts
+text:
+What is the role of the prior distribution in a variational autoencoder?
+
+expected :
+doubt
+
+predicted :
+out_of_scope
+
+misclassified prompts
+text:
+How do I file my income tax return?
+
+expected :
+out_of_scope
+
+predicted :
+doubt
+
+misclassified prompts
+text:
+Can you help me write a professional email to decline a meeting?
+
+expected :
+out_of_scope
+
+predicted :
+content_generation
+
+misclassified prompts
+text:
+How do you interpret a SHAP value for a feature in a tree model?
+
+expected :
+doubt
+
+predicted :
+out_of_scope
+
+misclassified prompts
+text:
+I updated the quiz based on student confusion. Is each question unambiguous now?
+
+expected :
+feedback
+
+predicted :
+doubt
+
+misclassified prompts
+text:
+What is the role of temperature in softmax during inference?
+
+expected :
+doubt
+
+predicted :
+out_of_scope
+
+misclassified prompts
+text:
+Please evaluate the exit ticket questions I designed for the end of each lesson.
+
+expected :
+feedback
+
+predicted :
+exit
+
+misclassified prompts
+text:
+Can you help me write a thank-you note?
+
+expected :
+out_of_scope
+
+predicted :
+content_generation
+
+misclassified prompts
+text:
+What is the national animal of India?
+
+expected :
+out_of_scope
+
+predicted :
+doubt
+
+misclassified prompts
+text:
+Does this make sense as a way to explain overfitting to students?
+
+expected :
+feedback
+
+predicted :
+doubt
+
+misclassified prompts
+text:
+the assignment instructions are not specific enough about the expected format
+
+expected :
+feedback
+
+predicted :
+doubt
+
+misclassified prompts
+text:
+Why is the number of support vectors important for understanding SVM generalization?
+
+expected :
+doubt
+
+predicted :
+out_of_scope
+
+misclassified prompts
+text:
+Is this quiz question phrased correctly?
+
+expected :
+feedback
+
+predicted :
+doubt
+
+misclassified prompts
+text:
+Please check the analogy I used to explain recursion and confirm it is not misleading.
+
+expected :
+feedback
+
+predicted :
+doubt
+
+misclassified prompts
+text:
+Can you explain what inflation means in simple terms?
+
+expected :
+out_of_scope
+
+predicted :
+doubt
+
+misclassified prompts
+text:
+Please help me understand why my quiz submission failed and also generate new quiz questions on pandas.
+
+expected :
+doubt
+
+predicted :
+feedback
+
+misclassified prompts
+text:
+How do I meditate effectively?
+
+expected :
+out_of_scope
+
+predicted :
+doubt
+
+misclassified prompts
+text:
+the project brief does not mention the expected submission format
+
+expected :
+feedback
+
+predicted :
+doubt
+
+misclassified prompts
+text:
+How do you evaluate a clustering algorithm when there are no ground truth labels?
+
+expected :
+doubt
+
+predicted :
+out_of_scope
+
+misclassified prompts
+text:
+How does sequence bucketing improve training efficiency for variable-length inputs?
+
+expected :
+doubt
+
+predicted :
+out_of_scope
+
+misclassified prompts
+text:
+What is the difference between yoga and pilates?
+
+expected :
+out_of_scope
+
+predicted :
+doubt
+
+misclassified prompts
+text:
+How does mean pooling of token embeddings compare to using the CLS token for sentence representation?
+
+expected :
+doubt
+
+predicted :
+out_of_scope
+
+misclassified prompts
+text:
+how do i reed a csv in padans?
+
+expected :
+doubt
+
+predicted :
+out_of_scope
+
+misclassified prompts
+text:
+What is the purpose of a validation set versus a test set?
+
+expected :
+doubt
+
+predicted :
+out_of_scope
+
+misclassified prompts
+text:
+the module introduction does not clearly set expectations for learners
+
+expected :
+feedback
+
+predicted :
+doubt
+
+misclassified prompts
+text:
+I need to start this chat over
+
+expected :
+reset
+
+predicted :
+exit
+
+misclassified prompts
+text:
+Can you show me how gradient descent works by creating a worked example with numbers?
+
+expected :
+content_generation
+
+predicted :
+out_of_scope
+
+misclassified prompts
+text:
+How do I file a complaint against a company online?
+
+expected :
+out_of_scope
+
+predicted :
+doubt
+
+misclassified prompts
+text:
+Could you look at the worked example I gave for k-means clustering and confirm the steps are correct?
+
+expected :
+feedback
+
+predicted :
+doubt
+
+misclassified prompts
+text:
+I want to go back to the beginning of this session
+
+expected :
+reset
+
+predicted :
+exit
+
+misclassified prompts
+text:
+What movies are releasing this weekend?
+
+expected :
+out_of_scope
+
+predicted :
+doubt
+
+misclassified prompts
+text:
+What is the role of the key query and value vectors in self-attention?
+
+expected :
+doubt
+
+predicted :
+out_of_scope
+
+misclassified prompts
+text:
+Can you write a short essay on climate change for me?
+
+expected :
+content_generation
+
+predicted :
+out_of_scope
+
+misclassified prompts
+text:
+What language is spoken in Brazil?
+
+expected :
+out_of_scope
+
+predicted :
+doubt
+
+misclassified prompts
+text:
+What is the role of the value matrix in the self-attention computation?
+
+expected :
+doubt
+
+predicted :
+out_of_scope
+
+misclassified prompts
+text:
+the grading rubric does not distinguish between partial and full credit
+
+expected :
+feedback
+
+predicted :
+doubt
+
+misclassified prompts
+text:
+I simplified the assignment instructions. Does the revised version avoid ambiguity?
+
+expected :
+feedback
+
+predicted :
+doubt
+
+misclassified prompts
+text:
+Why is it important to shuffle the dataset before the train-validation split?
+
+expected :
+doubt
+
+predicted :
+out_of_scope
+
+misclassified prompts
+text:
+What is the difference between a cold and the flu?
+
+expected :
+out_of_scope
+
+predicted :
+doubt
+
+misclassified prompts
+text:
+How does multi-head self-attention improve the model ability to capture different types of relationships?
+
+expected :
+doubt
+
+predicted :
+out_of_scope
+
+misclassified prompts
+text:
+How do you detect and handle outliers in a regression dataset?
+
+expected :
+doubt
+
+predicted :
+out_of_scope
+
+misclassified prompts
+text:
+What is the effect of using a very small weight initialization for deep networks?
+
+expected :
+doubt
+
+predicted :
+out_of_scope
+
+misclassified prompts
+text:
+Create a problem that demonstrates why data normalization is necessary before training.
+
+expected :
+content_generation
+
+predicted :
+doubt
+
+misclassified prompts
+text:
+What is the difference between hard negative mining and random negative sampling?
+
+expected :
+doubt
+
+predicted :
+out_of_scope
+
+misclassified prompts
+text:
+Why is it important to balance positive and negative examples in binary classifier training?
+
+expected :
+doubt
+
+predicted :
+out_of_scope
+
+misclassified prompts
+text:
+What are the benefits of intermittent fasting?
+
+expected :
+out_of_scope
+
+predicted :
+doubt
+
+misclassified prompts
+text:
+Can you explain the differences between types of tea?
+
+expected :
+out_of_scope
+
+predicted :
+doubt
+
+misclassified prompts
+text:
+How do ensemble methods like random forest reduce variance compared to a single tree?
+
+expected :
+doubt
+
+predicted :
+out_of_scope
+
+misclassified prompts
+text:
+Define recall.
+
+expected :
+doubt
+
+predicted :
+out_of_scope
+
+misclassified prompts
+text:
+Why is it important to use a stratified split when dealing with an imbalanced dataset?
+
+expected :
+doubt
+
+predicted :
+out_of_scope
+
+misclassified prompts
+text:
+the coding exercise does not include test cases for edge conditions
+
+expected :
+feedback
+
+predicted :
+content_generation
+
+misclassified prompts
+text:
+the reading material is too dense for the audience level of this course
+
+expected :
+feedback
+
+predicted :
+doubt
+
+misclassified prompts
+text:
+Define overfitting.
+
+expected :
+doubt
+
+predicted :
+exit
+
+misclassified prompts
+text:
+What is the difference between anxiety and depression?
+
+expected :
+out_of_scope
+
+predicted :
+doubt
+
+misclassified prompts
+text:
+Why is it important to monitor gradient norms during training?
+
+expected :
+doubt
+
+predicted :
+out_of_scope
+
+misclassified prompts
+text:
+Why do we normalize attention scores by the square root of the key dimension?
+
+expected :
+doubt
+
+predicted :
+out_of_scope

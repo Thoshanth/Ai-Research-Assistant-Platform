@@ -1,0 +1,74 @@
+Arif pure failed cases
+
+
+accuracy 98.07%
+
+Misclassified: 'Define recall....' 
+Expected: doubt | Predicted: exit (Conf: 0.9814)
+
+Misclassified: 'What is dropout?...' 
+Expected: doubt | Predicted: out_of_scope (Conf: 0.9986)
+
+Misclassified: 'What is a transformer?...' 
+Expected: doubt | Predicted: out_of_scope (Conf: 0.9960)
+
+
+Misclassified: 'How do I make my workspace more ergonomic?...' 
+Expected: out_of_scope | Predicted: doubt (Conf: 0.9944)
+
+Misclassified: 'How do I start journaling?...' 
+Expected: out_of_scope | Predicted: doubt (Conf: 0.9450)
+
+Misclassified: 'How does multi-head self-attention improve the model ability to capture different types of relationships?...' 
+Expected: doubt | Predicted: out_of_scope (Conf: 0.9892)
+
+Misclassified: 'the live session recording lacks clear chapter markers...' 
+Expected: feedback | Predicted: reset (Conf: 0.9976)
+
+Misclassified: 'What is the effect of increasing the number of attention heads in a transformer?...' 
+Expected: doubt | Predicted: out_of_scope (Conf: 0.9873)
+
+Misclassified: 'Is my explanation correct?...' 
+Expected: feedback | Predicted: doubt (Conf: 0.9949)
+
+Misclassified: 'What is the difference between a macro-average and a micro-average F1 score?...' 
+Expected: doubt | Predicted: out_of_scope (Conf: 0.9993)
+
+Misclassified: 'Does this make sense as a way to explain overfitting to students?...' 
+Expected: feedback | Predicted: doubt (Conf: 0.9809)
+
+Misclassified: 'Can you explain what blockchain technology is in simple words?...' 
+Expected: out_of_scope | Predicted: doubt (Conf: 0.9975)
+
+Misclassified: 'chek my lesn notes for today...' 
+Expected: feedback | Predicted: out_of_scope (Conf: 0.9994)
+
+Misclassified: 'Can you recommend some free tools for personal project management?...' 
+Expected: out_of_scope | Predicted: content_generation (Conf: 0.6825)
+
+Misclassified: 'Can you explain what inflation means in simple terms?...' 
+Expected: out_of_scope | Predicted: doubt (Conf: 0.9989)
+
+Misclassified: 'What is the difference between zero-shot one-shot and few-shot learning?...' 
+Expected: doubt | Predicted: out_of_scope (Conf: 0.9799)
+
+Misclassified: 'What is attention?...' 
+Expected: doubt | Predicted: out_of_scope (Conf: 0.9478)
+
+Misclassified: 'genrate interivew quetions on python plz...' 
+Expected: content_generation | Predicted: reset (Conf: 0.9642)
+
+Misclassified: 'How do I make my writing clearer and more concise?...' 
+Expected: out_of_scope | Predicted: feedback (Conf: 0.6696)
+
+Misclassified: 'clear...' 
+Expected: reset | Predicted: exit (Conf: 0.9925)
+
+Misclassified: 'how do i reed a csv in padans?...' 
+Expected: doubt | Predicted: out_of_scope (Conf: 0.9996)
+
+Misclassified: 'Can you show me how gradient descent works by creating a worked example with numbers?...' 
+Expected: content_generation | Predicted: doubt (Conf: 0.9555)
+
+Misclassified: 'the grading rubric does not distinguish between partial and full credit...' 
+Expected: feedback | Predicted: doubt (Conf: 0.9800)

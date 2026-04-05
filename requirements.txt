@@ -1,0 +1,8 @@
+fastapi
+uvicorn
+pymupdf
+pdfplumber
+pandas
+sqlalchemy
+pydantic
+python-multipart

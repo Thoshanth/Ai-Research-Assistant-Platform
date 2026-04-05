@@ -1,0 +1,19 @@
+2026-04-05 21:57:06 | INFO     | main | startup:20 | Starting AI Research Assistant API
+2026-04-05 21:57:06 | INFO     | main | startup:22 | Database initialized
+2026-04-05 21:57:12 | INFO     | main | startup:20 | Starting AI Research Assistant API
+2026-04-05 21:57:12 | INFO     | main | startup:22 | Database initialized
+2026-04-05 21:57:39 | INFO     | main | upload_document:26 | Upload request received | filename='Arif pure failed cases.txt' | content_type='text/plain'
+2026-04-05 21:57:39 | DEBUG    | main | upload_document:39 | File saved to disk | path='uploads\Arif pure failed cases.txt'
+2026-04-05 21:57:39 | INFO     | pipeline.extractor | extract_text:11 | Starting extraction | file='uploads\Arif pure failed cases.txt' | type='txt'
+2026-04-05 21:57:39 | DEBUG    | pipeline.extractor | extract_from_txt:84 | Reading TXT | file='uploads\Arif pure failed cases.txt'
+2026-04-05 21:57:39 | DEBUG    | pipeline.extractor | extract_from_txt:88 | TXT read with UTF-8 encoding
+2026-04-05 21:57:39 | INFO     | pipeline.extractor | extract_text:26 | Extraction complete | file='Arif pure failed cases.txt' | chars=2986 | pages=None | time=0.038s
+2026-04-05 21:57:39 | DEBUG    | pipeline.cleaner | clean_text:8 | Starting text cleaning | input_chars=2986
+2026-04-05 21:57:39 | INFO     | pipeline.cleaner | clean_text:23 | Cleaning complete | input_chars=2986 | output_chars=2961 | removed=25 | time=0.032s
+2026-04-05 21:57:39 | DEBUG    | pipeline.cleaner | get_word_count:33 | Word count: 375
+2026-04-05 21:57:39 | INFO     | pipeline.storage | save_document:9 | Saving document | file='Arif pure failed cases.txt' | words=375 | size=2.99KB
+2026-04-05 21:57:39 | INFO     | pipeline.storage | save_document:26 | Document saved | id=5 | file='Arif pure failed cases.txt' | time=0.071s
+2026-04-05 21:57:39 | INFO     | main | upload_document:57 | Upload pipeline complete | id=5 | file='Arif pure failed cases.txt' | total_time=0.157s
+2026-04-05 21:57:59 | INFO     | main | list_documents:72 | GET /documents called
+2026-04-05 21:57:59 | DEBUG    | pipeline.storage | get_all_documents:37 | Fetching all documents from DB
+2026-04-05 21:57:59 | INFO     | pipeline.storage | get_all_documents:41 | Fetched 5 documents from DB

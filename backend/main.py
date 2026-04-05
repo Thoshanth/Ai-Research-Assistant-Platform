@@ -8,6 +8,8 @@ from backend.pipeline.extractor import extract_text
 from backend.pipeline.cleaner import clean_text, get_word_count
 from backend.pipeline.storage import save_document, get_all_documents
 from backend.logger import get_logger
+# Add this import at the top with the others
+from backend.experiments.compare_embeddings import run_comparison
 
 logger = get_logger("main")
 
@@ -76,3 +78,22 @@ def list_documents():
 def health():
     logger.debug("Health check ping")
     return {"status": "ok"}
+
+# Add this new endpoint at the bottom of main.py
+@app.post("/experiments/run")
+def run_embedding_experiment():
+    """
+    Triggers the embedding model comparison experiment.
+    Results are logged to MLflow and returned as JSON.
+    """
+    logger.info("Embedding experiment triggered via API")
+    try:
+        results = run_comparison()
+        logger.info(f"Experiment complete | winner='{results.get('winner')}'")
+        return {
+            "message": "Experiment complete. Run 'mlflow ui' to view dashboard.",
+            "results": results
+        }
+    except Exception as e:
+        logger.error(f"Experiment failed: {e}", exc_info=True)
+        raise HTTPException(status_code=500, detail=str(e))

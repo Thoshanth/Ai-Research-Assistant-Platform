@@ -6,3 +6,8 @@ pandas
 sqlalchemy
 pydantic
 python-multipart
+sentence-transformers
+mlflow
+scikit-learn
+numpy
+openai

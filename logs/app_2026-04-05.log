@@ -34,3 +34,106 @@
 2026-04-05 22:03:16 | INFO     | main | list_documents:72 | GET /documents called
 2026-04-05 22:03:16 | DEBUG    | pipeline.storage | get_all_documents:37 | Fetching all documents from DB
 2026-04-05 22:03:16 | INFO     | pipeline.storage | get_all_documents:41 | Fetched 6 documents from DB
+2026-04-05 22:59:19 | INFO     | main | startup:22 | Starting AI Research Assistant API
+2026-04-05 22:59:19 | INFO     | main | startup:24 | Database initialized
+2026-04-05 22:59:41 | INFO     | main | run_embedding_experiment:89 | Embedding experiment triggered via API
+2026-04-05 22:59:41 | INFO     | experiments.compare | run_comparison:81 | ============================================================
+2026-04-05 22:59:41 | INFO     | experiments.compare | run_comparison:82 | Starting embedding model comparison experiment
+2026-04-05 22:59:41 | INFO     | experiments.compare | run_comparison:83 | ============================================================
+2026-04-05 22:59:41 | INFO     | experiments.compare | load_texts_from_db:70 | Loaded 23 text chunks from 6 documents
+2026-04-05 22:59:48 | INFO     | experiments.compare | run_comparison:104 | OpenAI API key found — including OpenAI embedder in comparison
+2026-04-05 22:59:48 | INFO     | embeddings.minilm | __init__:19 | Loading MiniLM model... (downloads on first run)
+2026-04-05 22:59:54 | INFO     | embeddings.minilm | __init__:22 | MiniLM loaded in 6.66s
+2026-04-05 22:59:54 | INFO     | experiments.compare | run_comparison:113 | Testing model: all-MiniLM-L6-v2
+2026-04-05 22:59:55 | DEBUG    | embeddings.minilm | embed:25 | Embedding 1 texts with MiniLM
+2026-04-05 22:59:55 | INFO     | embeddings.minilm | embed:29 | MiniLM embedded 1 texts in 0.169s | dim=384
+2026-04-05 22:59:55 | DEBUG    | embeddings.minilm | embed:25 | Embedding 1 texts with MiniLM
+2026-04-05 22:59:55 | INFO     | embeddings.minilm | embed:29 | MiniLM embedded 1 texts in 0.052s | dim=384
+2026-04-05 22:59:55 | DEBUG    | experiments.compare | compute_similarity_score:40 | Pair similarity: 'The cat sat on the mat...' | score=0.7138000130653381
+2026-04-05 22:59:55 | DEBUG    | embeddings.minilm | embed:25 | Embedding 1 texts with MiniLM
+2026-04-05 22:59:55 | INFO     | embeddings.minilm | embed:29 | MiniLM embedded 1 texts in 0.051s | dim=384
+2026-04-05 22:59:55 | DEBUG    | embeddings.minilm | embed:25 | Embedding 1 texts with MiniLM
+2026-04-05 22:59:55 | INFO     | embeddings.minilm | embed:29 | MiniLM embedded 1 texts in 0.049s | dim=384
+2026-04-05 22:59:55 | DEBUG    | experiments.compare | compute_similarity_score:40 | Pair similarity: 'Machine learning is a subset o...' | score=0.748199999332428
+2026-04-05 22:59:55 | DEBUG    | embeddings.minilm | embed:25 | Embedding 1 texts with MiniLM
+2026-04-05 22:59:55 | INFO     | embeddings.minilm | embed:29 | MiniLM embedded 1 texts in 0.043s | dim=384
+2026-04-05 22:59:55 | DEBUG    | embeddings.minilm | embed:25 | Embedding 1 texts with MiniLM
+2026-04-05 22:59:56 | INFO     | embeddings.minilm | embed:29 | MiniLM embedded 1 texts in 0.045s | dim=384
+2026-04-05 22:59:56 | DEBUG    | experiments.compare | compute_similarity_score:40 | Pair similarity: 'The stock market crashed today...' | score=0.6879000067710876
+2026-04-05 22:59:56 | INFO     | experiments.compare | run_comparison:125 | all-MiniLM-L6-v2 | similar_score=0.7166
+2026-04-05 22:59:56 | DEBUG    | embeddings.minilm | embed:25 | Embedding 1 texts with MiniLM
+2026-04-05 22:59:56 | INFO     | embeddings.minilm | embed:29 | MiniLM embedded 1 texts in 0.043s | dim=384
+2026-04-05 22:59:56 | DEBUG    | embeddings.minilm | embed:25 | Embedding 1 texts with MiniLM
+2026-04-05 22:59:56 | INFO     | embeddings.minilm | embed:29 | MiniLM embedded 1 texts in 0.07s | dim=384
+2026-04-05 22:59:56 | DEBUG    | experiments.compare | compute_similarity_score:40 | Pair similarity: 'The cat sat on the mat...' | score=0.09399999678134918
+2026-04-05 22:59:56 | DEBUG    | embeddings.minilm | embed:25 | Embedding 1 texts with MiniLM
+2026-04-05 22:59:56 | INFO     | embeddings.minilm | embed:29 | MiniLM embedded 1 texts in 0.052s | dim=384
+2026-04-05 22:59:56 | DEBUG    | embeddings.minilm | embed:25 | Embedding 1 texts with MiniLM
+2026-04-05 22:59:56 | INFO     | embeddings.minilm | embed:29 | MiniLM embedded 1 texts in 0.052s | dim=384
+2026-04-05 22:59:56 | DEBUG    | experiments.compare | compute_similarity_score:40 | Pair similarity: 'Machine learning is a subset o...' | score=0.0284000001847744
+2026-04-05 22:59:56 | DEBUG    | embeddings.minilm | embed:25 | Embedding 1 texts with MiniLM
+2026-04-05 22:59:56 | INFO     | embeddings.minilm | embed:29 | MiniLM embedded 1 texts in 0.048s | dim=384
+2026-04-05 22:59:56 | DEBUG    | embeddings.minilm | embed:25 | Embedding 1 texts with MiniLM
+2026-04-05 22:59:56 | INFO     | embeddings.minilm | embed:29 | MiniLM embedded 1 texts in 0.045s | dim=384
+2026-04-05 22:59:56 | DEBUG    | experiments.compare | compute_similarity_score:40 | Pair similarity: 'The sun rises in the east...' | score=-0.028699999675154686
+2026-04-05 22:59:56 | INFO     | experiments.compare | run_comparison:130 | all-MiniLM-L6-v2 | different_score=0.0312
+2026-04-05 22:59:56 | INFO     | experiments.compare | run_comparison:137 | all-MiniLM-L6-v2 | separation=0.6854
+2026-04-05 22:59:56 | DEBUG    | embeddings.minilm | embed:25 | Embedding 23 texts with MiniLM
+2026-04-05 22:59:58 | INFO     | embeddings.minilm | embed:29 | MiniLM embedded 23 texts in 2.363s | dim=384
+2026-04-05 22:59:58 | INFO     | experiments.compare | run_comparison:142 | all-MiniLM-L6-v2 | speed=2.364s for 23 chunks
+2026-04-05 22:59:58 | DEBUG    | embeddings.minilm | embed:25 | Embedding 1 texts with MiniLM
+2026-04-05 22:59:58 | INFO     | embeddings.minilm | embed:29 | MiniLM embedded 1 texts in 0.05s | dim=384
+2026-04-05 22:59:58 | INFO     | experiments.compare | run_comparison:148 | all-MiniLM-L6-v2 | dimensions=384
+2026-04-05 22:59:58 | INFO     | embeddings.mpnet | __init__:19 | Loading MPNet model... (downloads on first run)
+2026-04-05 23:01:04 | INFO     | embeddings.mpnet | __init__:22 | MPNet loaded in 66.02s
+2026-04-05 23:01:04 | INFO     | experiments.compare | run_comparison:113 | Testing model: all-mpnet-base-v2
+2026-04-05 23:01:05 | DEBUG    | embeddings.mpnet | embed:25 | Embedding 1 texts with MPNet
+2026-04-05 23:01:05 | INFO     | embeddings.mpnet | embed:29 | MPNet embedded 1 texts in 0.229s | dim=768
+2026-04-05 23:01:05 | DEBUG    | embeddings.mpnet | embed:25 | Embedding 1 texts with MPNet
+2026-04-05 23:01:05 | INFO     | embeddings.mpnet | embed:29 | MPNet embedded 1 texts in 0.115s | dim=768
+2026-04-05 23:01:05 | DEBUG    | experiments.compare | compute_similarity_score:40 | Pair similarity: 'The cat sat on the mat...' | score=0.723800003528595
+2026-04-05 23:01:05 | DEBUG    | embeddings.mpnet | embed:25 | Embedding 1 texts with MPNet
+2026-04-05 23:01:05 | INFO     | embeddings.mpnet | embed:29 | MPNet embedded 1 texts in 0.111s | dim=768
+2026-04-05 23:01:05 | DEBUG    | embeddings.mpnet | embed:25 | Embedding 1 texts with MPNet
+2026-04-05 23:01:05 | INFO     | embeddings.mpnet | embed:29 | MPNet embedded 1 texts in 0.123s | dim=768
+2026-04-05 23:01:05 | DEBUG    | experiments.compare | compute_similarity_score:40 | Pair similarity: 'Machine learning is a subset o...' | score=0.7049000263214111
+2026-04-05 23:01:05 | DEBUG    | embeddings.mpnet | embed:25 | Embedding 1 texts with MPNet
+2026-04-05 23:01:05 | INFO     | embeddings.mpnet | embed:29 | MPNet embedded 1 texts in 0.136s | dim=768
+2026-04-05 23:01:05 | DEBUG    | embeddings.mpnet | embed:25 | Embedding 1 texts with MPNet
+2026-04-05 23:01:05 | INFO     | embeddings.mpnet | embed:29 | MPNet embedded 1 texts in 0.104s | dim=768
+2026-04-05 23:01:05 | DEBUG    | experiments.compare | compute_similarity_score:40 | Pair similarity: 'The stock market crashed today...' | score=0.5325000286102295
+2026-04-05 23:01:05 | INFO     | experiments.compare | run_comparison:125 | all-mpnet-base-v2 | similar_score=0.6537
+2026-04-05 23:01:05 | DEBUG    | embeddings.mpnet | embed:25 | Embedding 1 texts with MPNet
+2026-04-05 23:01:06 | INFO     | embeddings.mpnet | embed:29 | MPNet embedded 1 texts in 0.108s | dim=768
+2026-04-05 23:01:06 | DEBUG    | embeddings.mpnet | embed:25 | Embedding 1 texts with MPNet
+2026-04-05 23:01:06 | INFO     | embeddings.mpnet | embed:29 | MPNet embedded 1 texts in 0.102s | dim=768
+2026-04-05 23:01:06 | DEBUG    | experiments.compare | compute_similarity_score:40 | Pair similarity: 'The cat sat on the mat...' | score=0.061400000005960464
+2026-04-05 23:01:06 | DEBUG    | embeddings.mpnet | embed:25 | Embedding 1 texts with MPNet
+2026-04-05 23:01:06 | INFO     | embeddings.mpnet | embed:29 | MPNet embedded 1 texts in 0.109s | dim=768
+2026-04-05 23:01:06 | DEBUG    | embeddings.mpnet | embed:25 | Embedding 1 texts with MPNet
+2026-04-05 23:01:06 | INFO     | embeddings.mpnet | embed:29 | MPNet embedded 1 texts in 0.113s | dim=768
+2026-04-05 23:01:06 | DEBUG    | experiments.compare | compute_similarity_score:40 | Pair similarity: 'Machine learning is a subset o...' | score=0.03620000183582306
+2026-04-05 23:01:06 | DEBUG    | embeddings.mpnet | embed:25 | Embedding 1 texts with MPNet
+2026-04-05 23:01:06 | INFO     | embeddings.mpnet | embed:29 | MPNet embedded 1 texts in 0.106s | dim=768
+2026-04-05 23:01:06 | DEBUG    | embeddings.mpnet | embed:25 | Embedding 1 texts with MPNet
+2026-04-05 23:01:06 | INFO     | embeddings.mpnet | embed:29 | MPNet embedded 1 texts in 0.105s | dim=768
+2026-04-05 23:01:06 | DEBUG    | experiments.compare | compute_similarity_score:40 | Pair similarity: 'The sun rises in the east...' | score=0.039400000125169754
+2026-04-05 23:01:06 | INFO     | experiments.compare | run_comparison:130 | all-mpnet-base-v2 | different_score=0.0457
+2026-04-05 23:01:06 | INFO     | experiments.compare | run_comparison:137 | all-mpnet-base-v2 | separation=0.608
+2026-04-05 23:01:06 | DEBUG    | embeddings.mpnet | embed:25 | Embedding 23 texts with MPNet
+2026-04-05 23:01:38 | INFO     | embeddings.mpnet | embed:29 | MPNet embedded 23 texts in 31.432s | dim=768
+2026-04-05 23:01:38 | INFO     | experiments.compare | run_comparison:142 | all-mpnet-base-v2 | speed=31.435s for 23 chunks
+2026-04-05 23:01:38 | DEBUG    | embeddings.mpnet | embed:25 | Embedding 1 texts with MPNet
+2026-04-05 23:01:38 | INFO     | embeddings.mpnet | embed:29 | MPNet embedded 1 texts in 0.273s | dim=768
+2026-04-05 23:01:38 | INFO     | experiments.compare | run_comparison:148 | all-mpnet-base-v2 | dimensions=768
+2026-04-05 23:01:41 | ERROR    | experiments.compare | run_comparison:159 | Model OpenAIEmbedder failed: OPENAI_API_KEY not set — skipping OpenAI embedder
+Traceback (most recent call last):
+  File "C:\Ai-Research-Assistant-Platform\backend\experiments\compare_embeddings.py", line 111, in run_comparison
+    embedder = EmbedderClass()
+  File "C:\Ai-Research-Assistant-Platform\backend\embeddings\openai_embed.py", line 22, in __init__
+    raise EnvironmentError("OPENAI_API_KEY not set — skipping OpenAI embedder")
+OSError: OPENAI_API_KEY not set — skipping OpenAI embedder
+2026-04-05 23:01:41 | INFO     | experiments.compare | run_comparison:164 | ============================================================
+2026-04-05 23:01:41 | INFO     | experiments.compare | run_comparison:165 | WINNER: all-MiniLM-L6-v2 with separation=0.6854
+2026-04-05 23:01:41 | INFO     | experiments.compare | run_comparison:166 | ============================================================
+2026-04-05 23:01:41 | INFO     | main | run_embedding_experiment:92 | Experiment complete | winner='all-MiniLM-L6-v2'

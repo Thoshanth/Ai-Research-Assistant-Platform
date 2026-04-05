@@ -139,3 +139,87 @@ OSError: OPENAI_API_KEY not set — skipping OpenAI embedder
 2026-04-05 23:01:41 | INFO     | main | run_embedding_experiment:92 | Experiment complete | winner='all-MiniLM-L6-v2'
 2026-04-05 23:07:03 | INFO     | main | startup:20 | Starting AI Research Assistant API
 2026-04-05 23:07:03 | INFO     | main | startup:22 | Database initialized
+2026-04-05 23:28:43 | INFO     | embeddings.minilm | __init__:12 | Loading MiniLM model...
+2026-04-05 23:28:50 | INFO     | embeddings.minilm | __init__:15 | MiniLM loaded in 7.15s
+2026-04-05 23:28:51 | INFO     | main | startup:20 | Starting AI Research Assistant API
+2026-04-05 23:28:51 | INFO     | main | startup:22 | Database initialized
+2026-04-05 23:39:43 | INFO     | embeddings.minilm | __init__:12 | Loading MiniLM model...
+2026-04-05 23:39:44 | INFO     | embeddings.minilm | __init__:12 | Loading MiniLM model...
+2026-04-05 23:39:48 | INFO     | embeddings.minilm | __init__:15 | MiniLM loaded in 4.35s
+2026-04-05 23:39:48 | INFO     | embeddings.minilm | __init__:15 | MiniLM loaded in 4.42s
+2026-04-05 23:39:48 | INFO     | main | startup:36 | Starting AI Research Assistant API
+2026-04-05 23:39:48 | INFO     | main | startup:38 | Database initialized
+2026-04-05 23:39:49 | INFO     | main | startup:36 | Starting AI Research Assistant API
+2026-04-05 23:39:49 | INFO     | main | startup:38 | Database initialized
+2026-04-05 23:40:21 | INFO     | embeddings.minilm | __init__:12 | Loading MiniLM model...
+2026-04-05 23:40:25 | INFO     | embeddings.minilm | __init__:15 | MiniLM loaded in 4.38s
+2026-04-05 23:40:26 | INFO     | main | startup:36 | Starting AI Research Assistant API
+2026-04-05 23:40:26 | INFO     | main | startup:38 | Database initialized
+2026-04-05 23:42:07 | DEBUG    | main | health:93 | Health check ping
+2026-04-05 23:43:00 | INFO     | main | upload_document:42 | Upload request received | filename='RESUME.pdf' | content_type='application/pdf'
+2026-04-05 23:43:00 | DEBUG    | main | upload_document:55 | File saved to disk | path='uploads\RESUME.pdf'
+2026-04-05 23:43:00 | INFO     | pipeline.extractor | extract_text:11 | Starting extraction | file='uploads\RESUME.pdf' | type='pdf'
+2026-04-05 23:43:00 | DEBUG    | pipeline.extractor | extract_from_pdf:35 | Attempting PyMuPDF extraction | file='uploads\RESUME.pdf'
+2026-04-05 23:43:00 | DEBUG    | pipeline.extractor | extract_from_pdf:42 | Page 1/1 extracted | chars=1321
+2026-04-05 23:43:00 | INFO     | pipeline.extractor | extract_text:26 | Extraction complete | file='RESUME.pdf' | chars=1321 | pages=1 | time=0.215s
+2026-04-05 23:43:00 | DEBUG    | pipeline.cleaner | clean_text:8 | Starting text cleaning | input_chars=1321
+2026-04-05 23:43:00 | INFO     | pipeline.cleaner | clean_text:23 | Cleaning complete | input_chars=1321 | output_chars=1320 | removed=1 | time=0.033s
+2026-04-05 23:43:00 | DEBUG    | pipeline.cleaner | get_word_count:33 | Word count: 177
+2026-04-05 23:43:00 | INFO     | pipeline.storage | save_document:9 | Saving document | file='RESUME.pdf' | words=177 | size=92.36KB
+2026-04-05 23:43:00 | INFO     | pipeline.storage | save_document:26 | Document saved | id=7 | file='RESUME.pdf' | time=0.049s
+2026-04-05 23:43:00 | INFO     | main | upload_document:73 | Upload pipeline complete | id=7 | file='RESUME.pdf' | total_time=0.31s
+2026-04-05 23:43:38 | DEBUG    | main | health:93 | Health check ping
+2026-04-05 23:43:51 | INFO     | main | list_documents:88 | GET /documents called
+2026-04-05 23:43:51 | DEBUG    | pipeline.storage | get_all_documents:37 | Fetching all documents from DB
+2026-04-05 23:43:51 | INFO     | pipeline.storage | get_all_documents:41 | Fetched 7 documents from DB
+2026-04-05 23:44:29 | INFO     | main | index_doc:107 | Index request | doc_id=7 | strategy=recursive
+2026-04-05 23:44:29 | INFO     | rag.pipeline | index_document:31 | Indexing document | id=7 | strategy=recursive
+2026-04-05 23:44:29 | INFO     | rag.chunker | chunk_text:138 | Chunking with strategy='recursive'
+2026-04-05 23:44:29 | INFO     | rag.chunker | recursive_chunker:74 | Recursive chunking | chunks=1 | strategy=paragraph→sentence→word
+2026-04-05 23:44:29 | INFO     | rag.pipeline | index_document:46 | Created 1 chunks from 'RESUME.pdf'
+2026-04-05 23:44:29 | INFO     | rag.pipeline | index_document:52 | Embedding 1 chunks...
+2026-04-05 23:44:29 | DEBUG    | embeddings.minilm | embed:18 | Embedding 1 texts with MiniLM
+2026-04-05 23:44:30 | INFO     | embeddings.minilm | embed:22 | MiniLM embedded 1 texts | dim=384 | time=0.448s
+2026-04-05 23:44:30 | DEBUG    | rag.vector_store | get_collection:26 | Collection 'documents' ready | count=0
+2026-04-05 23:44:30 | INFO     | rag.vector_store | store_chunks:70 | Stored 1 chunks | doc_id=7 | file='RESUME.pdf' | strategy=recursive
+2026-04-05 23:45:37 | INFO     | main | query_documents:126 | Query request | question='what is the document about?' | doc_id=7
+2026-04-05 23:45:37 | INFO     | rag.pipeline | query_pipeline:89 | Query received | question='what is the document about?...' | doc_filter=7
+2026-04-05 23:45:37 | DEBUG    | embeddings.minilm | embed:18 | Embedding 1 texts with MiniLM
+2026-04-05 23:45:37 | INFO     | embeddings.minilm | embed:22 | MiniLM embedded 1 texts | dim=384 | time=0.082s
+2026-04-05 23:45:37 | DEBUG    | rag.vector_store | get_collection:26 | Collection 'documents' ready | count=1
+2026-04-05 23:45:37 | DEBUG    | rag.vector_store | search_vectors:91 | Vector search returned 1 results
+2026-04-05 23:45:37 | DEBUG    | rag.retriever | vector_search:30 | Vector search: 1 results
+2026-04-05 23:45:37 | DEBUG    | rag.vector_store | get_collection:26 | Collection 'documents' ready | count=1
+2026-04-05 23:45:37 | DEBUG    | rag.vector_store | get_all_chunks_for_bm25:111 | Loaded 1 chunks for BM25
+2026-04-05 23:45:37 | DEBUG    | rag.retriever | bm25_search:66 | BM25 search: 0 results
+2026-04-05 23:45:37 | INFO     | rag.retriever | hybrid_search:117 | Hybrid search: 1 vector + 0 BM25 → 1 merged
+2026-04-05 23:45:37 | INFO     | rag.retriever | rerank:146 | Reranking: 1 → top 1 results
+2026-04-05 23:45:37 | INFO     | rag.pipeline | query_pipeline:137 | Sending to Claude | context_chunks=1 | context_chars=1345
+2026-04-05 23:45:38 | ERROR    | main | query_documents:131 | Query failed: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CZm5e2AR1Q4c7c48XdBP8'}
+Traceback (most recent call last):
+  File "C:\Ai-Research-Assistant-Platform\backend\main.py", line 128, in query_documents
+    result = query_pipeline(question, document_id=document_id, top_k=top_k)
+  File "C:\Ai-Research-Assistant-Platform\backend\rag\pipeline.py", line 140, in query_pipeline
+    response = client.messages.create(
+        model="claude-sonnet-4-5",
+    ...<2 lines>...
+        messages=[{"role": "user", "content": user_prompt}],
+    )
+  File "C:\Ai-Research-Assistant-Platform\.venv\Lib\site-packages\anthropic\_utils\_utils.py", line 282, in wrapper
+    return func(*args, **kwargs)
+  File "C:\Ai-Research-Assistant-Platform\.venv\Lib\site-packages\anthropic\resources\messages\messages.py", line 996, in create
+    return self._post(
+           ~~~~~~~~~~^
+        "/v1/messages",
+        ^^^^^^^^^^^^^^^
+    ...<30 lines>...
+        stream_cls=Stream[RawMessageStreamEvent],
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Ai-Research-Assistant-Platform\.venv\Lib\site-packages\anthropic\_base_client.py", line 1370, in post
+    return cast(ResponseT, self.request(cast_to, opts, stream=stream, stream_cls=stream_cls))
+                           ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Ai-Research-Assistant-Platform\.venv\Lib\site-packages\anthropic\_base_client.py", line 1143, in request
+    raise self._make_status_error_from_response(err.response) from None
+anthropic.BadRequestError: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CZm5e2AR1Q4c7c48XdBP8'}

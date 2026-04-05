@@ -8,10 +8,26 @@ from backend.pipeline.extractor import extract_text
 from backend.pipeline.cleaner import clean_text, get_word_count
 from backend.pipeline.storage import save_document, get_all_documents
 from backend.logger import get_logger
-
+from backend.rag.pipeline import index_document, query_pipeline
 logger = get_logger("main")
 
-app = FastAPI(title="AI Research Assistant", version="0.1.0")
+app = FastAPI(
+    title="AI Research Assistant",
+    version="0.1.0",
+    docs_url=None,  # disable default docs
+)
+
+from fastapi.openapi.docs import get_swagger_ui_html
+from fastapi.responses import HTMLResponse
+
+@app.get("/docs", include_in_schema=False)
+async def custom_swagger_ui():
+    return get_swagger_ui_html(
+        openapi_url="/openapi.json",
+        title="AI Research Assistant",
+        swagger_js_url="https://cdn.jsdelivr.net/npm/swagger-ui-dist@5/swagger-ui-bundle.js",
+        swagger_css_url="https://cdn.jsdelivr.net/npm/swagger-ui-dist@5/swagger-ui.css",
+    )
 UPLOAD_DIR = Path("uploads")
 UPLOAD_DIR.mkdir(exist_ok=True)
 
@@ -76,3 +92,41 @@ def list_documents():
 def health():
     logger.debug("Health check ping")
     return {"status": "ok"}
+# Add these imports at the top
+
+# Add these two endpoints at the bottom of main.py
+
+@app.post("/index/{document_id}")
+def index_doc(document_id: int, strategy: str = "recursive"):
+    """
+    Chunks, embeds, and stores a document in ChromaDB.
+    Run this once per document before querying.
+    
+    strategy options: 'fixed', 'recursive', 'semantic'
+    """
+    logger.info(f"Index request | doc_id={document_id} | strategy={strategy}")
+    try:
+        result = index_document(document_id, strategy=strategy)
+        return result
+    except ValueError as e:
+        raise HTTPException(status_code=404, detail=str(e))
+    except Exception as e:
+        logger.error(f"Indexing failed: {e}", exc_info=True)
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.post("/query")
+def query_documents(question: str, document_id: int = None, top_k: int = 3):
+    """
+    Ask a question. Returns an AI-generated answer with source citations.
+    
+    document_id: optional — filter to only search within one document
+    top_k: how many chunks to use as context (default 3)
+    """
+    logger.info(f"Query request | question='{question[:50]}' | doc_id={document_id}")
+    try:
+        result = query_pipeline(question, document_id=document_id, top_k=top_k)
+        return result
+    except Exception as e:
+        logger.error(f"Query failed: {e}", exc_info=True)
+        raise HTTPException(status_code=500, detail=str(e))

@@ -137,3 +137,5 @@ OSError: OPENAI_API_KEY not set — skipping OpenAI embedder
 2026-04-05 23:01:41 | INFO     | experiments.compare | run_comparison:165 | WINNER: all-MiniLM-L6-v2 with separation=0.6854
 2026-04-05 23:01:41 | INFO     | experiments.compare | run_comparison:166 | ============================================================
 2026-04-05 23:01:41 | INFO     | main | run_embedding_experiment:92 | Experiment complete | winner='all-MiniLM-L6-v2'
+2026-04-05 23:07:03 | INFO     | main | startup:20 | Starting AI Research Assistant API
+2026-04-05 23:07:03 | INFO     | main | startup:22 | Database initialized

@@ -13,6 +13,7 @@ from backend.langchain.chat_pipeline import chat
 from backend.langchain.memory import reset_memory
 from backend.llamaindex.loader import load_documents_from_db
 from backend.llamaindex.indexer import build_index
+from backend.agents.agent_pipeline import run_agent
 logger = get_logger("main")
 
 app = FastAPI(
@@ -194,4 +195,31 @@ def llamaindex_index(document_id: int = None):
         }
     except Exception as e:
         logger.error(f"LlamaIndex indexing failed: {e}", exc_info=True)
+        raise HTTPException(status_code=500, detail=str(e))
+@app.post("/agent/run")
+def agent_run(
+    question: str,
+    session_id: str = "default",
+    document_id: int = None,
+    show_trace: bool = False,
+):
+    """
+    Autonomous AI agent that decides what tools to use.
+
+    Unlike /query which always does RAG, the agent reasons
+    about your question and picks the right approach itself.
+
+    show_trace=true shows you the agent's step-by-step thinking.
+    """
+    logger.info(f"Agent endpoint | question='{question[:50]}' | session='{session_id}'")
+    try:
+        result = run_agent(
+            question=question,
+            session_id=session_id,
+            document_id=document_id,
+            show_trace=show_trace,
+        )
+        return result
+    except Exception as e:
+        logger.error(f"Agent failed: {e}", exc_info=True)
         raise HTTPException(status_code=500, detail=str(e))

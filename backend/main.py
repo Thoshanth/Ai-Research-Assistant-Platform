@@ -9,6 +9,10 @@ from backend.pipeline.cleaner import clean_text, get_word_count
 from backend.pipeline.storage import save_document, get_all_documents
 from backend.logger import get_logger
 from backend.rag.pipeline import index_document, query_pipeline
+from backend.langchain.chat_pipeline import chat
+from backend.langchain.memory import reset_memory
+from backend.llamaindex.loader import load_documents_from_db
+from backend.llamaindex.indexer import build_index
 logger = get_logger("main")
 
 app = FastAPI(
@@ -129,4 +133,65 @@ def query_documents(question: str, document_id: int = None, top_k: int = 3):
         return result
     except Exception as e:
         logger.error(f"Query failed: {e}", exc_info=True)
+        raise HTTPException(status_code=500, detail=str(e))
+@app.post("/chat")
+def chat_endpoint(
+    question: str,
+    session_id: str = "default",
+    document_id: int = None,
+):
+    """
+    Conversational endpoint with memory.
+    Remembers previous questions in the same session.
+    Routes automatically between document search and general knowledge.
+
+    session_id: use same value across turns to maintain conversation.
+    """
+    logger.info(f"Chat endpoint | session='{session_id}' | question='{question[:50]}'")
+    try:
+        result = chat(
+            question=question,
+            session_id=session_id,
+            document_id=document_id,
+        )
+        return result
+    except Exception as e:
+        logger.error(f"Chat failed: {e}", exc_info=True)
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.post("/chat/reset")
+def reset_chat(session_id: str = "default"):
+    """
+    Clears conversation memory for a session.
+    Call this when the user wants to start a fresh conversation.
+    """
+    reset_memory(session_id)
+    logger.info(f"Memory reset | session='{session_id}'")
+    return {"message": f"Conversation memory cleared for session '{session_id}'"}
+# add this import at the top with other imports
+
+
+@app.post("/llamaindex/index")
+def llamaindex_index(document_id: int = None):
+    """
+    Indexes documents into LlamaIndex's ChromaDB collection.
+    Different from /index which uses the Stage 3 manual pipeline.
+    
+    document_id: optional — index one doc, or leave empty to index ALL docs
+    """
+    logger.info(f"LlamaIndex indexing | doc_id={document_id}")
+    try:
+        documents = load_documents_from_db(document_id=document_id)
+        if not documents:
+            raise HTTPException(status_code=404, detail="No documents found in database")
+        
+        index = build_index(documents)
+        return {
+            "message": "Documents indexed into LlamaIndex successfully",
+            "documents_indexed": len(documents),
+            "filenames": [doc.metadata["filename"] for doc in documents],
+        }
+    except Exception as e:
+        logger.error(f"LlamaIndex indexing failed: {e}", exc_info=True)
         raise HTTPException(status_code=500, detail=str(e))

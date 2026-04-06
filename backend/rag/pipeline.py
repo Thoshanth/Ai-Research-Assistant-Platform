@@ -1,5 +1,5 @@
 import os
-from anthropic import Anthropic
+from groq import Groq
 from dotenv import load_dotenv
 from backend.rag.chunker import chunk_text
 from backend.rag.vector_store import store_chunks
@@ -14,23 +14,25 @@ logger = get_logger("rag.pipeline")
 # Load embedder once — reused for all indexing and querying
 embedder = MiniLMEmbedder()
 
-# Anthropic client for answer generation
-client = Anthropic(api_key=os.getenv("ANTHROPIC_API_KEY"))
+# Groq client — free and fast
+client = Groq(api_key=os.getenv("GROQ_API_KEY"))
+
+# Model to use — llama-3.1-8b-instant is fast and free
+# You can also use "llama-3.1-70b-versatile" for better quality
+LLM_MODEL = "llama-3.1-8b-instant"
 
 
 def index_document(document_id: int, strategy: str = "recursive") -> dict:
     """
     INDEXING PIPELINE
-    
+
     Takes a document already stored in SQLite (from Stage 1),
     chunks it, embeds the chunks, and stores them in ChromaDB.
-    
-    This only needs to run once per document.
-    After indexing, the document is searchable forever.
+    Only needs to run once per document.
     """
     logger.info(f"Indexing document | id={document_id} | strategy={strategy}")
 
-    # Step 1: Load document text from SQLite (Stage 1 stored this)
+    # Step 1: Load document text from SQLite
     db = SessionLocal()
     try:
         record = db.query(DocumentRecord).filter(DocumentRecord.id == document_id).first()
@@ -48,10 +50,10 @@ def index_document(document_id: int, strategy: str = "recursive") -> dict:
     if not chunks:
         raise ValueError("No chunks created — document may be empty")
 
-    # Step 3: Embed all chunks (batch for efficiency)
+    # Step 3: Embed all chunks
     logger.info(f"Embedding {len(chunks)} chunks...")
     embeddings = embedder.embed(chunks)
-    embeddings_list = embeddings.tolist()  # ChromaDB needs plain lists
+    embeddings_list = embeddings.tolist()
 
     # Step 4: Store in ChromaDB
     store_chunks(
@@ -74,22 +76,13 @@ def index_document(document_id: int, strategy: str = "recursive") -> dict:
 def query_pipeline(question: str, document_id: int = None, top_k: int = 3) -> dict:
     """
     QUERYING PIPELINE
-    
-    Takes a user question, retrieves relevant chunks,
-    and generates a cited answer using Claude.
-    
-    Steps:
-    1. Embed the question
-    2. Hybrid search (vector + BM25)
-    3. Rerank results
-    4. Build prompt with context
-    5. Call Claude API
-    6. Return answer + sources
-    """
-    logger.info(f"Query received | question='{question[:60]}...' | doc_filter={document_id}")
 
-    # Step 1: Embed the question using the SAME model used for indexing
-    # This is critical — query and chunks must be in the same vector space
+    Takes a user question, retrieves relevant chunks,
+    and generates a cited answer using Groq (free LLM).
+    """
+    logger.info(f"Query received | question='{question[:60]}' | doc_filter={document_id}")
+
+    # Step 1: Embed the question
     query_embedding = embedder.embed([question])[0].tolist()
 
     # Step 2: Hybrid search
@@ -107,10 +100,10 @@ def query_pipeline(question: str, document_id: int = None, top_k: int = 3) -> di
             "sources": [],
         }
 
-    # Step 3: Rerank to get top_k most relevant chunks
+    # Step 3: Rerank to get top_k chunks
     top_chunks = rerank(question, raw_results, top_k=top_k)
 
-    # Step 4: Build the context string from top chunks
+    # Step 4: Build context from top chunks
     context_parts = []
     for i, chunk in enumerate(top_chunks, 1):
         source = chunk["metadata"].get("filename", "Unknown")
@@ -118,13 +111,11 @@ def query_pipeline(question: str, document_id: int = None, top_k: int = 3) -> di
 
     context = "\n\n".join(context_parts)
 
-    # Step 5: Build the prompt
-    # This is the core prompt engineering of RAG —
-    # we force the LLM to only use what we give it
-    system_prompt = """You are a precise research assistant. 
+    # Step 5: Build prompt
+    system_prompt = """You are a precise research assistant.
 Answer questions using ONLY the provided context chunks.
 Always cite your sources using [Source N] notation.
-If the context doesn't contain enough information, say so clearly.
+If the context does not contain enough information, say so clearly.
 Never make up information not present in the context."""
 
     user_prompt = f"""Context:
@@ -134,20 +125,26 @@ Question: {question}
 
 Answer based only on the context above, with source citations:"""
 
-    logger.info(f"Sending to Claude | context_chunks={len(top_chunks)} | context_chars={len(context)}")
+    logger.info(f"Sending to Groq | model={LLM_MODEL} | chunks={len(top_chunks)} | context_chars={len(context)}")
 
-    # Step 6: Call Claude API
-    response = client.messages.create(
-        model="claude-sonnet-4-5",
+    # Step 6: Call Groq API
+    response = client.chat.completions.create(
+        model=LLM_MODEL,
+        messages=[
+            {"role": "system", "content": system_prompt},
+            {"role": "user", "content": user_prompt},
+        ],
         max_tokens=1024,
-        system=system_prompt,
-        messages=[{"role": "user", "content": user_prompt}],
+        temperature=0.1,  # low temperature = more factual, less creative
     )
 
-    answer = response.content[0].text
-    logger.info(f"Claude responded | answer_chars={len(answer)} | input_tokens={response.usage.input_tokens} | output_tokens={response.usage.output_tokens}")
+    answer = response.choices[0].message.content
+    input_tokens = response.usage.prompt_tokens
+    output_tokens = response.usage.completion_tokens
 
-    # Step 7: Build sources list for the API response
+    logger.info(f"Groq responded | answer_chars={len(answer)} | input_tokens={input_tokens} | output_tokens={output_tokens}")
+
+    # Step 7: Build sources list
     sources = [
         {
             "chunk_index": chunk["metadata"].get("chunk_index"),
@@ -163,5 +160,6 @@ Answer based only on the context above, with source citations:"""
         "answer": answer,
         "sources": sources,
         "chunks_used": len(top_chunks),
+        "model_used": LLM_MODEL,
         "question": question,
     }

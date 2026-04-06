@@ -6,3 +6,10 @@ pandas
 sqlalchemy
 pydantic
 python-multipart
+groq
+llama-index
+llama-index-vector-stores-chroma
+llama-index-embeddings-huggingface
+llama-index-llms-groq
+langchain
+langchain-groq

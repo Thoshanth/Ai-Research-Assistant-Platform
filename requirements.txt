@@ -7,9 +7,17 @@ sqlalchemy
 pydantic
 python-multipart
 groq
+mlflow
 llama-index
 llama-index-vector-stores-chroma
 llama-index-embeddings-huggingface
 llama-index-llms-groq
 langchain
 langchain-groq
+sentence-transformers
+scikit-learn
+numpy
+openai
+python-dotenv
+llama-index-llms-openai-like
+rank-bm25   

@@ -521,3 +521,24 @@ Action Input: The name of the person in the resume is John.
 2026-04-06 09:21:32 | INFO     | agents.loop | run_agent_loop:131 | Agent finished at iteration 1
 2026-04-06 09:21:32 | INFO     | agents.loop | run_agent_loop:154 | Agent loop complete | iterations=1 | answer_chars=45
 2026-04-06 09:21:32 | DEBUG    | langchain.memory | save_to_memory:28 | Saved to memory | session='user123' | total_messages=4
+2026-04-06 09:42:34 | INFO     | embeddings.minilm | __init__:12 | Loading MiniLM model...
+2026-04-06 09:42:41 | INFO     | embeddings.minilm | __init__:15 | MiniLM loaded in 7.06s
+2026-04-06 09:43:12 | INFO     | main | startup:41 | Starting AI Research Assistant API
+2026-04-06 09:43:12 | INFO     | main | startup:43 | Database initialized
+2026-04-06 09:44:36 | INFO     | main | list_documents:93 | GET /documents called
+2026-04-06 09:44:36 | DEBUG    | pipeline.storage | get_all_documents:37 | Fetching all documents from DB
+2026-04-06 09:44:36 | INFO     | pipeline.storage | get_all_documents:41 | Fetched 7 documents from DB
+2026-04-06 09:45:18 | INFO     | main | query_documents:131 | Query request | question='whats in the document' | doc_id=7
+2026-04-06 09:45:18 | INFO     | rag.pipeline | query_pipeline:83 | Query received | question='whats in the document' | doc_filter=7
+2026-04-06 09:45:18 | DEBUG    | embeddings.minilm | embed:18 | Embedding 1 texts with MiniLM
+2026-04-06 09:45:38 | INFO     | embeddings.minilm | embed:22 | MiniLM embedded 1 texts | dim=384 | time=20.128s
+2026-04-06 09:45:38 | DEBUG    | rag.vector_store | get_collection:26 | Collection 'documents' ready | count=5
+2026-04-06 09:45:38 | DEBUG    | rag.vector_store | search_vectors:91 | Vector search returned 1 results
+2026-04-06 09:45:38 | DEBUG    | rag.retriever | vector_search:30 | Vector search: 1 results
+2026-04-06 09:45:38 | DEBUG    | rag.vector_store | get_collection:26 | Collection 'documents' ready | count=5
+2026-04-06 09:45:38 | DEBUG    | rag.vector_store | get_all_chunks_for_bm25:111 | Loaded 1 chunks for BM25
+2026-04-06 09:45:38 | DEBUG    | rag.retriever | bm25_search:66 | BM25 search: 0 results
+2026-04-06 09:45:38 | INFO     | rag.retriever | hybrid_search:117 | Hybrid search: 1 vector + 0 BM25 → 1 merged
+2026-04-06 09:45:38 | INFO     | rag.retriever | rerank:146 | Reranking: 1 → top 1 results
+2026-04-06 09:45:38 | INFO     | rag.pipeline | query_pipeline:128 | Sending to Groq | model=llama-3.1-8b-instant | chunks=1 | context_chars=1345
+2026-04-06 09:45:39 | INFO     | rag.pipeline | query_pipeline:145 | Groq responded | answer_chars=193 | input_tokens=391 | output_tokens=41

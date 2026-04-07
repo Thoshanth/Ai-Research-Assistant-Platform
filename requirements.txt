@@ -25,3 +25,4 @@ prometheus-fastapi-instrumentator
 psutil
 pillow
 pdf2image
+networkx

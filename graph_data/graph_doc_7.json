@@ -1,0 +1,184 @@
+{
+  "directed": true,
+  "multigraph": false,
+  "graph": {},
+  "nodes": [
+    {
+      "type": "Person",
+      "document_id": 7,
+      "id": "M.S.N. Thoshanth Reddy"
+    },
+    {
+      "type": "Organization",
+      "document_id": 7,
+      "id": "Hyderabad Institute of Technology and Management"
+    },
+    {
+      "type": "Location",
+      "document_id": 7,
+      "id": "Hyderabad"
+    },
+    {
+      "type": "Technology",
+      "document_id": 7,
+      "id": "Python"
+    },
+    {
+      "type": "Technology",
+      "document_id": 7,
+      "id": "Java"
+    },
+    {
+      "type": "Technology",
+      "document_id": 7,
+      "id": "SQL"
+    },
+    {
+      "type": "Technology",
+      "document_id": 7,
+      "id": "OpenCV"
+    },
+    {
+      "type": "Technology",
+      "document_id": 7,
+      "id": "TensorFlow"
+    },
+    {
+      "type": "Technology",
+      "document_id": 7,
+      "id": "NumPy"
+    },
+    {
+      "type": "Organization",
+      "document_id": 7,
+      "id": "Udemy"
+    },
+    {
+      "type": "Organization",
+      "document_id": 7,
+      "id": "HackWithHyderabad"
+    },
+    {
+      "type": "Organization",
+      "document_id": 7,
+      "id": "Devnovate"
+    },
+    {
+      "type": "Organization",
+      "document_id": 7,
+      "id": "HackWithIndia"
+    },
+    {
+      "type": "Project",
+      "document_id": 7,
+      "id": "Sign-to-Speech Language Converter"
+    },
+    {
+      "type": "Project",
+      "document_id": 7,
+      "id": "Online Food Delivery System"
+    },
+    {
+      "type": "Concept",
+      "document_id": 7,
+      "id": "AI-based Applications"
+    },
+    {
+      "type": "Concept",
+      "document_id": 7,
+      "id": "Hackathons"
+    },
+    {
+      "type": "Concept",
+      "document_id": 7,
+      "id": "Problem Solving"
+    }
+  ],
+  "edges": [
+    {
+      "relation": "STUDIES_AT",
+      "source": "M.S.N. Thoshanth Reddy",
+      "target": "Hyderabad Institute of Technology and Management"
+    },
+    {
+      "relation": "WORKS_AT",
+      "source": "M.S.N. Thoshanth Reddy",
+      "target": "Hyderabad"
+    },
+    {
+      "relation": "HAS_SKILL",
+      "source": "M.S.N. Thoshanth Reddy",
+      "target": "Python"
+    },
+    {
+      "relation": "HAS_SKILL",
+      "source": "M.S.N. Thoshanth Reddy",
+      "target": "Java"
+    },
+    {
+      "relation": "HAS_SKILL",
+      "source": "M.S.N. Thoshanth Reddy",
+      "target": "SQL"
+    },
+    {
+      "relation": "HAS_SKILL",
+      "source": "M.S.N. Thoshanth Reddy",
+      "target": "OpenCV"
+    },
+    {
+      "relation": "HAS_SKILL",
+      "source": "M.S.N. Thoshanth Reddy",
+      "target": "TensorFlow"
+    },
+    {
+      "relation": "HAS_SKILL",
+      "source": "M.S.N. Thoshanth Reddy",
+      "target": "NumPy"
+    },
+    {
+      "relation": "CREATED_BY",
+      "source": "M.S.N. Thoshanth Reddy",
+      "target": "Sign-to-Speech Language Converter"
+    },
+    {
+      "relation": "CREATED_BY",
+      "source": "M.S.N. Thoshanth Reddy",
+      "target": "Online Food Delivery System"
+    },
+    {
+      "relation": "KNOWS",
+      "source": "M.S.N. Thoshanth Reddy",
+      "target": "Udemy"
+    },
+    {
+      "relation": "KNOWS",
+      "source": "M.S.N. Thoshanth Reddy",
+      "target": "HackWithHyderabad"
+    },
+    {
+      "relation": "KNOWS",
+      "source": "M.S.N. Thoshanth Reddy",
+      "target": "Devnovate"
+    },
+    {
+      "relation": "KNOWS",
+      "source": "M.S.N. Thoshanth Reddy",
+      "target": "HackWithIndia"
+    },
+    {
+      "relation": "RELATED_TO",
+      "source": "M.S.N. Thoshanth Reddy",
+      "target": "AI-based Applications"
+    },
+    {
+      "relation": "RELATED_TO",
+      "source": "M.S.N. Thoshanth Reddy",
+      "target": "Hackathons"
+    },
+    {
+      "relation": "RELATED_TO",
+      "source": "M.S.N. Thoshanth Reddy",
+      "target": "Problem Solving"
+    }
+  ]
+}

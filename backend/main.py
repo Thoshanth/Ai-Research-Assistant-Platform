@@ -22,6 +22,11 @@ from backend.llamaindex.loader import load_documents_from_db
 from backend.llamaindex.indexer import build_index
 from backend.middleware.monitoring import log_request, get_system_stats
 from backend.logger import get_logger
+from backend.graphrag.pipeline import (
+    build_knowledge_graph,
+    query_knowledge_graph,
+    explore_graph,
+)
 
 logger = get_logger("main")
 
@@ -408,3 +413,80 @@ async def upload_image(file: UploadFile = File(...)):
         "file_size_kb": result["file_size_kb"],
         "next_step": f"Index this document: POST /index/{doc_id}",
     }
+
+# ══════════════════════════════════════════════════════════════════
+# STAGE 9 — GraphRAG & Knowledge Graphs
+# ══════════════════════════════════════════════════════════════════
+
+@app.post("/graphrag/build/{document_id}", tags=["Stage 9 - GraphRAG"])
+def build_graph_endpoint(document_id: int):
+    """
+    Extracts entities and relationships from a document
+    and builds a knowledge graph.
+
+    Run this after /index/{document_id}.
+    Takes 1-2 minutes depending on document size.
+    """
+    logger.info(f"GraphRAG build | doc_id={document_id}")
+    try:
+        result = build_knowledge_graph(document_id)
+        return result
+    except ValueError as e:
+        raise HTTPException(404, str(e))
+    except Exception as e:
+        logger.error(f"Graph build failed: {e}", exc_info=True)
+        raise HTTPException(500, str(e))
+
+
+@app.post("/graphrag/query", tags=["Stage 9 - GraphRAG"])
+def graphrag_query_endpoint(
+    question: str,
+    document_id: int,
+    top_k: int = 3,
+):
+    """
+    Query using combined graph traversal + vector search.
+
+    Better than /query for relationship questions like:
+    - "How is X related to Y?"
+    - "What connects A and B?"
+    - "Which entities are most connected?"
+    """
+    logger.info(f"GraphRAG query | question='{question[:50]}'")
+
+    # Input guards still apply
+    run_input_guards(question)
+
+    try:
+        result = query_knowledge_graph(question, document_id, top_k)
+
+        # Output guards still apply
+        safe = run_output_guards(result["answer"])
+        result["answer"] = safe["answer"]
+        result["guardrail_info"] = {
+            "warnings": safe["guardrail_warnings"],
+            "pii_redacted": safe["pii_redacted"],
+        }
+        return result
+    except ValueError as e:
+        raise HTTPException(404, str(e))
+    except Exception as e:
+        logger.error(f"GraphRAG query failed: {e}", exc_info=True)
+        raise HTTPException(500, str(e))
+
+
+@app.get("/graphrag/explore", tags=["Stage 9 - GraphRAG"])
+def explore_graph_endpoint(document_id: int):
+    """
+    Explore the knowledge graph for a document.
+    Returns all entities grouped by type and all relationships.
+    Great for understanding what the graph extracted.
+    """
+    logger.info(f"Graph explore | doc_id={document_id}")
+    try:
+        return explore_graph(document_id)
+    except ValueError as e:
+        raise HTTPException(404, str(e))
+    except Exception as e:
+        logger.error(f"Graph explore failed: {e}", exc_info=True)
+        raise HTTPException(500, str(e))

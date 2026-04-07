@@ -1,0 +1,74 @@
+2026-04-07 06:31:37 | INFO     | embeddings.minilm | __init__:12 | Loading MiniLM model...
+2026-04-07 06:31:42 | INFO     | embeddings.minilm | __init__:15 | MiniLM loaded in 5.96s
+2026-04-07 06:32:02 | INFO     | main | lifespan:33 | ==================================================
+2026-04-07 06:32:02 | INFO     | main | lifespan:34 | Starting AI Research Assistant API
+2026-04-07 06:32:02 | INFO     | main | lifespan:35 | ==================================================
+2026-04-07 06:32:02 | INFO     | main | lifespan:37 | Database initialized
+2026-04-07 06:32:03 | INFO     | middleware.monitoring | log_request:21 | HTTP | GET /docs | status=200 | duration=1.73ms
+2026-04-07 06:32:03 | INFO     | middleware.monitoring | log_request:21 | HTTP | GET /openapi.json | status=200 | duration=20.45ms
+2026-04-07 06:33:36 | DEBUG    | pipeline.storage | get_all_documents:37 | Fetching all documents from DB
+2026-04-07 06:33:36 | INFO     | pipeline.storage | get_all_documents:41 | Fetched 8 documents from DB
+2026-04-07 06:33:36 | DEBUG    | main | health:277 | Health check | status=healthy | cpu=58.8%
+2026-04-07 06:33:36 | INFO     | middleware.monitoring | log_request:21 | HTTP | GET /health | status=200 | duration=159.56ms
+2026-04-07 06:34:57 | INFO     | middleware.monitoring | log_request:21 | HTTP | GET /metrics | status=200 | duration=8.65ms
+2026-04-07 06:36:17 | DEBUG    | pipeline.storage | get_all_documents:37 | Fetching all documents from DB
+2026-04-07 06:36:17 | INFO     | pipeline.storage | get_all_documents:41 | Fetched 8 documents from DB
+2026-04-07 06:36:17 | INFO     | middleware.monitoring | log_request:21 | HTTP | GET /metrics/summary | status=200 | duration=124.29ms
+2026-04-07 06:37:41 | INFO     | main | chat_endpoint:213 | Chat | session='user1234' | question='explain the resume the core concepts in it , and w'
+2026-04-07 06:37:41 | INFO     | langchain.chat_pipeline | chat:30 | Chat request | session='user1234' | question='explain the resume the core concepts in it , and what he wan'
+2026-04-07 06:37:41 | INFO     | langchain.memory | get_memory:15 | Created new memory | session='user1234'
+2026-04-07 06:37:41 | INFO     | langchain.router | should_search_documents:38 | Router: keyword match 'resume' → DOCUMENTS
+2026-04-07 06:37:41 | INFO     | llamaindex.indexer | load_existing_index:80 | Loading existing index from ChromaDB
+2026-04-07 06:37:41 | DEBUG    | llamaindex.indexer | get_chroma_collection:44 | ChromaDB collection 'llamaindex_docs' ready | count=11
+2026-04-07 06:37:41 | INFO     | llamaindex.indexer | load_existing_index:95 | Index loaded | vectors in collection=11
+2026-04-07 06:37:41 | INFO     | llamaindex.query_engine | build_query_engine:24 | Building query engine | top_k=5 | similarity_cutoff=0.3
+2026-04-07 06:37:41 | INFO     | llamaindex.query_engine | build_query_engine:43 | Query engine ready
+2026-04-07 06:37:46 | INFO     | langchain.chat_pipeline | _answer_from_documents:79 | Document answer generated | chars=2049
+2026-04-07 06:37:46 | DEBUG    | langchain.memory | save_to_memory:28 | Saved to memory | session='user1234' | total_messages=2
+2026-04-07 06:37:46 | INFO     | langchain.chat_pipeline | chat:48 | Chat complete | session='user1234' | source=documents
+2026-04-07 06:37:46 | INFO     | middleware.monitoring | log_request:21 | HTTP | POST /chat | status=200 | duration=5188.28ms
+2026-04-07 06:39:24 | INFO     | main | chat_endpoint:213 | Chat | session='user1234' | question='say what ats score u got in last chat'
+2026-04-07 06:39:25 | INFO     | langchain.chat_pipeline | chat:30 | Chat request | session='user1234' | question='say what ats score u got in last chat'
+2026-04-07 06:39:25 | DEBUG    | langchain.memory | get_history_as_text:42 | History loaded | session='user1234' | messages=2
+2026-04-07 06:39:25 | INFO     | langchain.router | should_search_documents:66 | Router: LLM decision='DOCUMENTS' | use_docs=True | question='say what ats score u got in last chat'
+2026-04-07 06:39:25 | INFO     | llamaindex.indexer | load_existing_index:80 | Loading existing index from ChromaDB
+2026-04-07 06:39:25 | DEBUG    | llamaindex.indexer | get_chroma_collection:44 | ChromaDB collection 'llamaindex_docs' ready | count=11
+2026-04-07 06:39:25 | INFO     | llamaindex.indexer | load_existing_index:95 | Index loaded | vectors in collection=11
+2026-04-07 06:39:25 | INFO     | llamaindex.query_engine | build_query_engine:24 | Building query engine | top_k=5 | similarity_cutoff=0.3
+2026-04-07 06:39:25 | INFO     | llamaindex.query_engine | build_query_engine:43 | Query engine ready
+2026-04-07 06:39:27 | INFO     | langchain.chat_pipeline | _answer_from_documents:79 | Document answer generated | chars=48
+2026-04-07 06:39:27 | DEBUG    | langchain.memory | save_to_memory:28 | Saved to memory | session='user1234' | total_messages=4
+2026-04-07 06:39:27 | INFO     | langchain.chat_pipeline | chat:48 | Chat complete | session='user1234' | source=documents
+2026-04-07 06:39:27 | INFO     | middleware.monitoring | log_request:21 | HTTP | POST /chat | status=200 | duration=2365.21ms
+2026-04-07 07:00:21 | ERROR    | middleware.monitoring | log_request:23 | HTTP | GET / | status=404 | duration=5.00ms
+2026-04-07 07:00:21 | ERROR    | middleware.monitoring | log_request:23 | HTTP | GET /favicon.ico | status=404 | duration=0.70ms
+2026-04-07 07:00:26 | INFO     | middleware.monitoring | log_request:21 | HTTP | GET /docs | status=200 | duration=8.44ms
+2026-04-07 07:00:26 | INFO     | middleware.monitoring | log_request:21 | HTTP | GET /openapi.json | status=200 | duration=6.62ms
+2026-04-07 07:01:04 | INFO     | main | chat_endpoint:213 | Chat | session='user12345' | question='explain about the datasets'
+2026-04-07 07:01:04 | INFO     | langchain.chat_pipeline | chat:30 | Chat request | session='user12345' | question='explain about the datasets'
+2026-04-07 07:01:04 | INFO     | langchain.memory | get_memory:15 | Created new memory | session='user12345'
+2026-04-07 07:01:04 | INFO     | langchain.router | should_search_documents:66 | Router: LLM decision='GENERAL' | use_docs=False | question='explain about the datasets'
+2026-04-07 07:01:05 | INFO     | langchain.chat_pipeline | _answer_from_llm:111 | General answer generated | chars=1991
+2026-04-07 07:01:05 | DEBUG    | langchain.memory | save_to_memory:28 | Saved to memory | session='user12345' | total_messages=2
+2026-04-07 07:01:05 | INFO     | langchain.chat_pipeline | chat:48 | Chat complete | session='user12345' | source=general_knowledge
+2026-04-07 07:01:05 | INFO     | middleware.monitoring | log_request:21 | HTTP | POST /chat | status=200 | duration=1428.19ms
+2026-04-07 07:01:33 | INFO     | main | chat_endpoint:213 | Chat | session='user12345' | question='explain about the dataset in the given csv file'
+2026-04-07 07:01:33 | INFO     | langchain.chat_pipeline | chat:30 | Chat request | session='user12345' | question='explain about the dataset in the given csv file'
+2026-04-07 07:01:33 | DEBUG    | langchain.memory | get_history_as_text:42 | History loaded | session='user12345' | messages=2
+2026-04-07 07:01:33 | INFO     | langchain.router | should_search_documents:38 | Router: keyword match 'file' → DOCUMENTS
+2026-04-07 07:01:33 | INFO     | llamaindex.indexer | load_existing_index:80 | Loading existing index from ChromaDB
+2026-04-07 07:01:34 | DEBUG    | llamaindex.indexer | get_chroma_collection:44 | ChromaDB collection 'llamaindex_docs' ready | count=11
+2026-04-07 07:01:34 | INFO     | llamaindex.indexer | load_existing_index:95 | Index loaded | vectors in collection=11
+2026-04-07 07:01:34 | INFO     | llamaindex.query_engine | build_query_engine:24 | Building query engine | top_k=5 | similarity_cutoff=0.3
+2026-04-07 07:01:34 | INFO     | llamaindex.query_engine | build_query_engine:43 | Query engine ready
+2026-04-07 07:01:35 | INFO     | langchain.chat_pipeline | _answer_from_documents:79 | Document answer generated | chars=1563
+2026-04-07 07:01:35 | DEBUG    | langchain.memory | save_to_memory:28 | Saved to memory | session='user12345' | total_messages=4
+2026-04-07 07:01:35 | INFO     | langchain.chat_pipeline | chat:48 | Chat complete | session='user12345' | source=documents
+2026-04-07 07:01:35 | INFO     | middleware.monitoring | log_request:21 | HTTP | POST /chat | status=200 | duration=1556.10ms
+2026-04-07 01:33:27 | INFO     | embeddings.minilm | __init__:12 | Loading MiniLM model...
+2026-04-07 01:33:45 | INFO     | embeddings.minilm | __init__:15 | MiniLM loaded in 17.05s
+2026-04-07 01:34:05 | INFO     | main | lifespan:33 | ==================================================
+2026-04-07 01:34:05 | INFO     | main | lifespan:34 | Starting AI Research Assistant API
+2026-04-07 01:34:05 | INFO     | main | lifespan:35 | ==================================================
+2026-04-07 01:34:05 | INFO     | main | lifespan:37 | Database initialized
+2026-04-07 01:49:42 | INFO     | main | lifespan:39 | Shutting down AI Research Assistant API

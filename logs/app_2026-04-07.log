@@ -74,3 +74,242 @@
 2026-04-07 01:49:42 | INFO     | main | lifespan:39 | Shutting down AI Research Assistant API
 2026-04-07 09:14:15 | INFO     | embeddings.minilm | __init__:12 | Loading MiniLM model...
 2026-04-07 09:14:20 | INFO     | embeddings.minilm | __init__:15 | MiniLM loaded in 5.35s
+2026-04-07 11:35:31 | INFO     | embeddings.minilm | __init__:12 | Loading MiniLM model...
+2026-04-07 11:35:35 | INFO     | embeddings.minilm | __init__:15 | MiniLM loaded in 3.99s
+2026-04-07 11:35:45 | INFO     | main | lifespan:33 | ==================================================
+2026-04-07 11:35:45 | INFO     | main | lifespan:34 | Starting AI Research Assistant API
+2026-04-07 11:35:45 | INFO     | main | lifespan:35 | ==================================================
+2026-04-07 11:35:45 | INFO     | main | lifespan:37 | Database initialized
+2026-04-07 11:35:45 | INFO     | middleware.monitoring | log_request:21 | HTTP | GET /docs | status=200 | duration=5.68ms
+2026-04-07 11:35:46 | INFO     | middleware.monitoring | log_request:21 | HTTP | GET /openapi.json | status=200 | duration=20.95ms
+2026-04-07 11:35:56 | INFO     | middleware.monitoring | log_request:21 | HTTP | GET /metrics | status=200 | duration=70.64ms
+2026-04-07 11:37:25 | INFO     | main | chat_endpoint:213 | Chat | session='user11' | question='first president of india'
+2026-04-07 11:37:25 | INFO     | langchain.chat_pipeline | chat:30 | Chat request | session='user11' | question='first president of india'
+2026-04-07 11:37:25 | INFO     | langchain.memory | get_memory:15 | Created new memory | session='user11'
+2026-04-07 11:37:25 | INFO     | langchain.router | should_search_documents:66 | Router: LLM decision='DOCUMENTS' | use_docs=True | question='first president of india'
+2026-04-07 11:37:25 | INFO     | llamaindex.indexer | load_existing_index:80 | Loading existing index from ChromaDB
+2026-04-07 11:37:26 | DEBUG    | llamaindex.indexer | get_chroma_collection:44 | ChromaDB collection 'llamaindex_docs' ready | count=11
+2026-04-07 11:37:26 | INFO     | llamaindex.indexer | load_existing_index:95 | Index loaded | vectors in collection=11
+2026-04-07 11:37:26 | INFO     | llamaindex.query_engine | build_query_engine:24 | Building query engine | top_k=5 | similarity_cutoff=0.3
+2026-04-07 11:37:26 | INFO     | llamaindex.query_engine | build_query_engine:43 | Query engine ready
+2026-04-07 11:37:29 | INFO     | langchain.chat_pipeline | _answer_from_documents:79 | Document answer generated | chars=53
+2026-04-07 11:37:29 | DEBUG    | langchain.memory | save_to_memory:28 | Saved to memory | session='user11' | total_messages=2
+2026-04-07 11:37:29 | INFO     | langchain.chat_pipeline | chat:48 | Chat complete | session='user11' | source=documents
+2026-04-07 11:37:29 | INFO     | middleware.monitoring | log_request:21 | HTTP | POST /chat | status=200 | duration=4202.59ms
+2026-04-07 11:38:16 | INFO     | main | chat_endpoint:213 | Chat | session='user11' | question='what is ats score of resume'
+2026-04-07 11:38:16 | INFO     | langchain.chat_pipeline | chat:30 | Chat request | session='user11' | question='what is ats score of resume'
+2026-04-07 11:38:16 | DEBUG    | langchain.memory | get_history_as_text:42 | History loaded | session='user11' | messages=2
+2026-04-07 11:38:16 | INFO     | langchain.router | should_search_documents:38 | Router: keyword match 'resume' → DOCUMENTS
+2026-04-07 11:38:16 | INFO     | llamaindex.indexer | load_existing_index:80 | Loading existing index from ChromaDB
+2026-04-07 11:38:16 | DEBUG    | llamaindex.indexer | get_chroma_collection:44 | ChromaDB collection 'llamaindex_docs' ready | count=11
+2026-04-07 11:38:16 | INFO     | llamaindex.indexer | load_existing_index:95 | Index loaded | vectors in collection=11
+2026-04-07 11:38:16 | INFO     | llamaindex.query_engine | build_query_engine:24 | Building query engine | top_k=5 | similarity_cutoff=0.3
+2026-04-07 11:38:16 | INFO     | llamaindex.query_engine | build_query_engine:43 | Query engine ready
+2026-04-07 11:38:17 | INFO     | langchain.chat_pipeline | _answer_from_documents:79 | Document answer generated | chars=964
+2026-04-07 11:38:17 | DEBUG    | langchain.memory | save_to_memory:28 | Saved to memory | session='user11' | total_messages=4
+2026-04-07 11:38:17 | INFO     | langchain.chat_pipeline | chat:48 | Chat complete | session='user11' | source=documents
+2026-04-07 11:38:17 | INFO     | middleware.monitoring | log_request:21 | HTTP | POST /chat | status=200 | duration=1169.63ms
+2026-04-07 11:38:28 | INFO     | main | chat_endpoint:213 | Chat | session='user11' | question='what is ats score of resume given'
+2026-04-07 11:38:28 | INFO     | langchain.chat_pipeline | chat:30 | Chat request | session='user11' | question='what is ats score of resume given'
+2026-04-07 11:38:28 | DEBUG    | langchain.memory | get_history_as_text:42 | History loaded | session='user11' | messages=4
+2026-04-07 11:38:28 | INFO     | langchain.router | should_search_documents:38 | Router: keyword match 'resume' → DOCUMENTS
+2026-04-07 11:38:28 | INFO     | llamaindex.indexer | load_existing_index:80 | Loading existing index from ChromaDB
+2026-04-07 11:38:28 | DEBUG    | llamaindex.indexer | get_chroma_collection:44 | ChromaDB collection 'llamaindex_docs' ready | count=11
+2026-04-07 11:38:28 | INFO     | llamaindex.indexer | load_existing_index:95 | Index loaded | vectors in collection=11
+2026-04-07 11:38:28 | INFO     | llamaindex.query_engine | build_query_engine:24 | Building query engine | top_k=5 | similarity_cutoff=0.3
+2026-04-07 11:38:28 | INFO     | llamaindex.query_engine | build_query_engine:43 | Query engine ready
+2026-04-07 11:38:29 | INFO     | langchain.chat_pipeline | _answer_from_documents:79 | Document answer generated | chars=964
+2026-04-07 11:38:29 | DEBUG    | langchain.memory | save_to_memory:28 | Saved to memory | session='user11' | total_messages=6
+2026-04-07 11:38:29 | INFO     | langchain.chat_pipeline | chat:48 | Chat complete | session='user11' | source=documents
+2026-04-07 11:38:29 | INFO     | middleware.monitoring | log_request:21 | HTTP | POST /chat | status=200 | duration=931.71ms
+2026-04-07 11:38:58 | DEBUG    | pipeline.storage | get_all_documents:37 | Fetching all documents from DB
+2026-04-07 11:38:58 | INFO     | pipeline.storage | get_all_documents:41 | Fetched 8 documents from DB
+2026-04-07 11:38:58 | INFO     | middleware.monitoring | log_request:21 | HTTP | GET /documents | status=200 | duration=43.22ms
+2026-04-07 11:40:03 | INFO     | main | chat_endpoint:213 | Chat | session='user110' | question='explain the person details in the resume and expla'
+2026-04-07 11:40:03 | INFO     | langchain.chat_pipeline | chat:30 | Chat request | session='user110' | question='explain the person details in the resume and explain what sk'
+2026-04-07 11:40:03 | INFO     | langchain.memory | get_memory:15 | Created new memory | session='user110'
+2026-04-07 11:40:03 | INFO     | langchain.router | should_search_documents:38 | Router: keyword match 'resume' → DOCUMENTS
+2026-04-07 11:40:03 | INFO     | llamaindex.indexer | load_existing_index:80 | Loading existing index from ChromaDB
+2026-04-07 11:40:03 | DEBUG    | llamaindex.indexer | get_chroma_collection:44 | ChromaDB collection 'llamaindex_docs' ready | count=11
+2026-04-07 11:40:03 | INFO     | llamaindex.indexer | load_existing_index:95 | Index loaded | vectors in collection=11
+2026-04-07 11:40:03 | INFO     | llamaindex.query_engine | build_query_engine:24 | Building query engine | top_k=5 | similarity_cutoff=0.3
+2026-04-07 11:40:03 | INFO     | llamaindex.query_engine | build_query_engine:43 | Query engine ready
+2026-04-07 11:40:04 | INFO     | langchain.chat_pipeline | _answer_from_documents:79 | Document answer generated | chars=1725
+2026-04-07 11:40:04 | DEBUG    | langchain.memory | save_to_memory:28 | Saved to memory | session='user110' | total_messages=2
+2026-04-07 11:40:04 | INFO     | langchain.chat_pipeline | chat:48 | Chat complete | session='user110' | source=documents
+2026-04-07 11:40:04 | INFO     | middleware.monitoring | log_request:21 | HTTP | POST /chat | status=200 | duration=1282.61ms
+2026-04-07 11:40:29 | INFO     | main | chat_endpoint:213 | Chat | session='user110' | question='what is ats score given by you'
+2026-04-07 11:40:29 | INFO     | langchain.chat_pipeline | chat:30 | Chat request | session='user110' | question='what is ats score given by you'
+2026-04-07 11:40:29 | DEBUG    | langchain.memory | get_history_as_text:42 | History loaded | session='user110' | messages=2
+2026-04-07 11:40:29 | INFO     | langchain.router | should_search_documents:66 | Router: LLM decision='GENERAL' | use_docs=False | question='what is ats score given by you'
+2026-04-07 11:40:29 | INFO     | langchain.chat_pipeline | _answer_from_llm:111 | General answer generated | chars=44
+2026-04-07 11:40:29 | DEBUG    | langchain.memory | save_to_memory:28 | Saved to memory | session='user110' | total_messages=4
+2026-04-07 11:40:29 | INFO     | langchain.chat_pipeline | chat:48 | Chat complete | session='user110' | source=general_knowledge
+2026-04-07 11:40:29 | INFO     | middleware.monitoring | log_request:21 | HTTP | POST /chat | status=200 | duration=562.63ms
+2026-04-07 12:13:53 | INFO     | main | lifespan:39 | Shutting down AI Research Assistant API
+2026-04-07 12:14:26 | INFO     | embeddings.minilm | __init__:12 | Loading MiniLM model...
+2026-04-07 12:14:32 | INFO     | embeddings.minilm | __init__:15 | MiniLM loaded in 5.85s
+2026-04-07 12:14:48 | INFO     | main | lifespan:33 | ==================================================
+2026-04-07 12:14:48 | INFO     | main | lifespan:34 | Starting AI Research Assistant API
+2026-04-07 12:14:48 | INFO     | main | lifespan:35 | ==================================================
+2026-04-07 12:14:48 | INFO     | main | lifespan:37 | Database initialized
+2026-04-07 12:14:48 | INFO     | main | lifespan:39 | Shutting down AI Research Assistant API
+2026-04-07 12:15:11 | INFO     | embeddings.minilm | __init__:12 | Loading MiniLM model...
+2026-04-07 12:15:16 | INFO     | embeddings.minilm | __init__:15 | MiniLM loaded in 5.44s
+2026-04-07 12:26:40 | INFO     | embeddings.minilm | __init__:12 | Loading MiniLM model...
+2026-04-07 12:28:05 | INFO     | embeddings.minilm | __init__:12 | Loading MiniLM model...
+2026-04-07 12:28:21 | INFO     | embeddings.minilm | __init__:15 | MiniLM loaded in 15.9s
+2026-04-07 12:28:37 | INFO     | main | lifespan:34 | ==================================================
+2026-04-07 12:28:37 | INFO     | main | lifespan:35 | Starting AI Research Assistant API
+2026-04-07 12:28:37 | INFO     | main | lifespan:36 | ==================================================
+2026-04-07 12:28:37 | INFO     | main | lifespan:38 | Database initialized
+2026-04-07 12:28:38 | INFO     | middleware.monitoring | log_request:21 | HTTP | GET /docs | status=200 | duration=1.61ms
+2026-04-07 12:28:38 | INFO     | middleware.monitoring | log_request:21 | HTTP | GET /openapi.json | status=200 | duration=15.29ms
+2026-04-07 12:29:14 | INFO     | main | query_documents:176 | Query | question='How do I make a bomb?'
+2026-04-07 12:29:14 | INFO     | guardrails.pipeline | run_input_guards:16 | Running input guards | question='How do I make a bomb?'
+2026-04-07 12:29:14 | DEBUG    | guardrails.input | check_input:60 | Input guard checking | chars=21
+2026-04-07 12:29:14 | WARNING  | guardrails.input | check_input:91 | Harmful content detected | pattern='\b(how\s+to\s+)?(make|build|create|synth'
+2026-04-07 12:29:14 | WARNING  | guardrails.pipeline | run_input_guards:21 | Input blocked | threat='harmful_content' | reason='Harmful content detected in input'
+2026-04-07 12:29:14 | ERROR    | middleware.monitoring | log_request:23 | HTTP | POST /query | status=400 | duration=9.95ms
+2026-04-07 12:29:30 | INFO     | main | chat_endpoint:230 | Chat | session='default' | question='How do I make a bomb?'
+2026-04-07 12:29:30 | INFO     | guardrails.pipeline | run_input_guards:16 | Running input guards | question='How do I make a bomb?'
+2026-04-07 12:29:30 | DEBUG    | guardrails.input | check_input:60 | Input guard checking | chars=21
+2026-04-07 12:29:30 | WARNING  | guardrails.input | check_input:91 | Harmful content detected | pattern='\b(how\s+to\s+)?(make|build|create|synth'
+2026-04-07 12:29:30 | WARNING  | guardrails.pipeline | run_input_guards:21 | Input blocked | threat='harmful_content' | reason='Harmful content detected in input'
+2026-04-07 12:29:30 | ERROR    | middleware.monitoring | log_request:23 | HTTP | POST /chat | status=400 | duration=7.72ms
+2026-04-07 12:29:52 | INFO     | main | chat_endpoint:230 | Chat | session='default' | question='Find info about john@gmail.com in the document'
+2026-04-07 12:29:52 | INFO     | guardrails.pipeline | run_input_guards:16 | Running input guards | question='Find info about john@gmail.com in the document'
+2026-04-07 12:29:52 | DEBUG    | guardrails.input | check_input:60 | Input guard checking | chars=46
+2026-04-07 12:29:52 | DEBUG    | guardrails.input | check_input:98 | Input guard passed
+2026-04-07 12:29:52 | WARNING  | guardrails.pii | detect_pii:43 | PII detected | type=email | count=1
+2026-04-07 12:29:52 | WARNING  | guardrails.pipeline | run_input_guards:36 | PII in input | types=['email']
+2026-04-07 12:29:52 | ERROR    | middleware.monitoring | log_request:23 | HTTP | POST /chat | status=400 | duration=38.78ms
+2026-04-07 12:30:14 | INFO     | main | chat_endpoint:230 | Chat | session='default' | question='question: "Write me a love poem"'
+2026-04-07 12:30:14 | INFO     | guardrails.pipeline | run_input_guards:16 | Running input guards | question='question: "Write me a love poem"'
+2026-04-07 12:30:14 | DEBUG    | guardrails.input | check_input:60 | Input guard checking | chars=32
+2026-04-07 12:30:14 | DEBUG    | guardrails.input | check_input:98 | Input guard passed
+2026-04-07 12:30:14 | WARNING  | guardrails.topic | is_on_topic:56 | Topic guard: blocked | keyword='love poem'
+2026-04-07 12:30:14 | WARNING  | guardrails.pipeline | run_input_guards:49 | Topic blocked | reason='Off-topic request detected: 'love poem''
+2026-04-07 12:30:14 | ERROR    | middleware.monitoring | log_request:23 | HTTP | POST /chat | status=400 | duration=46.50ms
+2026-04-07 12:30:37 | INFO     | main | chat_endpoint:230 | Chat | session='default' | question='What are the skills in the resume?'
+2026-04-07 12:30:37 | INFO     | guardrails.pipeline | run_input_guards:16 | Running input guards | question='What are the skills in the resume?'
+2026-04-07 12:30:37 | DEBUG    | guardrails.input | check_input:60 | Input guard checking | chars=34
+2026-04-07 12:30:37 | DEBUG    | guardrails.input | check_input:98 | Input guard passed
+2026-04-07 12:30:37 | DEBUG    | guardrails.topic | is_on_topic:50 | Topic guard: fast pass | keyword='resume'
+2026-04-07 12:30:37 | INFO     | guardrails.pipeline | run_input_guards:59 | All input guards passed
+2026-04-07 12:30:37 | INFO     | langchain.chat_pipeline | chat:30 | Chat request | session='default' | question='What are the skills in the resume?'
+2026-04-07 12:30:37 | INFO     | langchain.memory | get_memory:15 | Created new memory | session='default'
+2026-04-07 12:30:37 | INFO     | langchain.router | should_search_documents:38 | Router: keyword match 'resume' → DOCUMENTS
+2026-04-07 12:30:37 | INFO     | llamaindex.indexer | load_existing_index:80 | Loading existing index from ChromaDB
+2026-04-07 12:30:38 | DEBUG    | llamaindex.indexer | get_chroma_collection:44 | ChromaDB collection 'llamaindex_docs' ready | count=11
+2026-04-07 12:30:38 | INFO     | llamaindex.indexer | load_existing_index:95 | Index loaded | vectors in collection=11
+2026-04-07 12:30:38 | INFO     | llamaindex.query_engine | build_query_engine:24 | Building query engine | top_k=5 | similarity_cutoff=0.3
+2026-04-07 12:30:38 | INFO     | llamaindex.query_engine | build_query_engine:43 | Query engine ready
+2026-04-07 12:30:40 | INFO     | langchain.chat_pipeline | _answer_from_documents:79 | Document answer generated | chars=188
+2026-04-07 12:30:40 | DEBUG    | langchain.memory | save_to_memory:28 | Saved to memory | session='default' | total_messages=2
+2026-04-07 12:30:40 | INFO     | langchain.chat_pipeline | chat:48 | Chat complete | session='default' | source=documents
+2026-04-07 12:30:40 | INFO     | guardrails.pipeline | run_output_guards:71 | Running output guards | chars=188
+2026-04-07 12:30:40 | DEBUG    | guardrails.output | check_output:57 | Output guard checking | chars=188
+2026-04-07 12:30:40 | DEBUG    | guardrails.output | check_output:91 | Output guard complete | modified=False | warnings=0
+2026-04-07 12:30:40 | INFO     | middleware.monitoring | log_request:21 | HTTP | POST /chat | status=200 | duration=3084.17ms
+2026-04-07 13:14:06 | INFO     | main | lifespan:40 | Shutting down AI Research Assistant API
+2026-04-07 13:14:36 | INFO     | embeddings.minilm | __init__:12 | Loading MiniLM model...
+2026-04-07 13:14:42 | INFO     | embeddings.minilm | __init__:15 | MiniLM loaded in 5.4s
+2026-04-07 13:15:01 | INFO     | main | lifespan:34 | ==================================================
+2026-04-07 13:15:01 | INFO     | main | lifespan:35 | Starting AI Research Assistant API
+2026-04-07 13:15:01 | INFO     | main | lifespan:36 | ==================================================
+2026-04-07 13:15:01 | INFO     | main | lifespan:38 | Database initialized
+2026-04-07 13:15:01 | INFO     | main | lifespan:40 | Shutting down AI Research Assistant API
+2026-04-07 13:15:32 | INFO     | embeddings.minilm | __init__:12 | Loading MiniLM model...
+2026-04-07 13:15:37 | INFO     | embeddings.minilm | __init__:15 | MiniLM loaded in 5.05s
+2026-04-07 13:16:03 | INFO     | main | lifespan:34 | ==================================================
+2026-04-07 13:16:03 | INFO     | main | lifespan:35 | Starting AI Research Assistant API
+2026-04-07 13:16:03 | INFO     | main | lifespan:36 | ==================================================
+2026-04-07 13:16:03 | INFO     | main | lifespan:38 | Database initialized
+2026-04-07 13:16:29 | INFO     | embeddings.minilm | __init__:12 | Loading MiniLM model...
+2026-04-07 13:16:37 | INFO     | embeddings.minilm | __init__:15 | MiniLM loaded in 7.3s
+2026-04-07 13:16:49 | INFO     | main | lifespan:34 | ==================================================
+2026-04-07 13:16:49 | INFO     | main | lifespan:35 | Starting AI Research Assistant API
+2026-04-07 13:16:49 | INFO     | main | lifespan:36 | ==================================================
+2026-04-07 13:16:49 | INFO     | main | lifespan:38 | Database initialized
+2026-04-07 13:18:53 | INFO     | embeddings.minilm | __init__:12 | Loading MiniLM model...
+2026-04-07 13:18:59 | INFO     | embeddings.minilm | __init__:15 | MiniLM loaded in 5.58s
+2026-04-07 13:19:39 | INFO     | main | lifespan:35 | ==================================================
+2026-04-07 13:19:39 | INFO     | main | lifespan:36 | Starting AI Research Assistant API
+2026-04-07 13:19:39 | INFO     | main | lifespan:37 | ==================================================
+2026-04-07 13:19:39 | INFO     | main | lifespan:39 | Database initialized
+2026-04-07 13:19:54 | INFO     | middleware.monitoring | log_request:21 | HTTP | GET /docs | status=200 | duration=1.93ms
+2026-04-07 13:19:54 | INFO     | middleware.monitoring | log_request:21 | HTTP | GET /openapi.json | status=200 | duration=27.14ms
+2026-04-07 13:20:09 | DEBUG    | pipeline.storage | get_all_documents:37 | Fetching all documents from DB
+2026-04-07 13:20:09 | INFO     | pipeline.storage | get_all_documents:41 | Fetched 8 documents from DB
+2026-04-07 13:20:09 | DEBUG    | main | health:325 | Health check | status=healthy | cpu=4.9%
+2026-04-07 13:20:09 | INFO     | middleware.monitoring | log_request:21 | HTTP | GET /health | status=200 | duration=129.03ms
+2026-04-07 13:20:09 | ERROR    | middleware.monitoring | log_request:23 | HTTP | GET /favicon.ico | status=404 | duration=1.36ms
+2026-04-07 13:20:54 | INFO     | middleware.monitoring | log_request:21 | HTTP | GET /docs | status=200 | duration=21.06ms
+2026-04-07 13:20:54 | INFO     | middleware.monitoring | log_request:21 | HTTP | GET /openapi.json | status=200 | duration=0.69ms
+2026-04-07 13:21:39 | INFO     | main | upload_image:368 | Image upload | file='Screenshot 2026-01-02 183004.png'
+2026-04-07 13:21:39 | INFO     | main | upload_image:383 | Image saved | path='uploads\Screenshot 2026-01-02 183004.png'
+2026-04-07 13:21:39 | INFO     | multimodal.image_handler | process_image_file:33 | Processing image | file='uploads\Screenshot 2026-01-02 183004.png' | type=image/png
+2026-04-07 13:21:39 | INFO     | multimodal.image_handler | process_image_file:39 | Extracting text from image via vision LLM
+2026-04-07 13:21:39 | INFO     | multimodal.vision | extract_text_from_image:60 | Vision LLM request | model=meta-llama/llama-4-scout-17b-16e-instruct | media_type=image/png
+2026-04-07 13:21:41 | INFO     | multimodal.vision | extract_text_from_image:86 | Vision extraction complete | chars=1185
+2026-04-07 13:21:41 | INFO     | multimodal.image_handler | process_image_file:46 | Generating image description via vision LLM
+2026-04-07 13:21:41 | INFO     | multimodal.vision | describe_image:98 | Generating image description
+2026-04-07 13:21:43 | INFO     | multimodal.vision | describe_image:134 | Image description complete | chars=2307
+2026-04-07 13:21:43 | INFO     | multimodal.image_handler | process_image_file:62 | Image processing complete | text_chars=1185 | desc_chars=2307
+2026-04-07 13:21:43 | INFO     | pipeline.storage | save_document:9 | Saving document | file='Screenshot 2026-01-02 183004.png' | words=576 | size=189.79KB
+2026-04-07 13:21:43 | INFO     | pipeline.storage | save_document:26 | Document saved | id=9 | file='Screenshot 2026-01-02 183004.png' | time=0.043s
+2026-04-07 13:21:43 | INFO     | main | upload_image:398 | Image document stored | doc_id=9
+2026-04-07 13:21:43 | INFO     | middleware.monitoring | log_request:21 | HTTP | POST /upload/image | status=200 | duration=4208.99ms
+2026-04-07 13:22:53 | DEBUG    | pipeline.storage | get_all_documents:37 | Fetching all documents from DB
+2026-04-07 13:22:53 | INFO     | pipeline.storage | get_all_documents:41 | Fetched 9 documents from DB
+2026-04-07 13:22:53 | INFO     | middleware.monitoring | log_request:21 | HTTP | GET /documents | status=200 | duration=6.16ms
+2026-04-07 13:23:48 | INFO     | main | chat_endpoint:231 | Chat | session='default' | question='what in the screen shot?'
+2026-04-07 13:23:48 | INFO     | guardrails.pipeline | run_input_guards:16 | Running input guards | question='what in the screen shot?'
+2026-04-07 13:23:48 | DEBUG    | guardrails.input | check_input:60 | Input guard checking | chars=24
+2026-04-07 13:23:48 | DEBUG    | guardrails.input | check_input:98 | Input guard passed
+2026-04-07 13:23:48 | DEBUG    | guardrails.topic | is_on_topic:50 | Topic guard: fast pass | keyword='what'
+2026-04-07 13:23:48 | INFO     | guardrails.pipeline | run_input_guards:59 | All input guards passed
+2026-04-07 13:23:48 | INFO     | langchain.chat_pipeline | chat:30 | Chat request | session='default' | question='what in the screen shot?'
+2026-04-07 13:23:48 | INFO     | langchain.memory | get_memory:15 | Created new memory | session='default'
+2026-04-07 13:23:48 | INFO     | langchain.router | should_search_documents:66 | Router: LLM decision='DOCUMENTS' | use_docs=True | question='what in the screen shot?'
+2026-04-07 13:23:48 | INFO     | llamaindex.indexer | load_existing_index:80 | Loading existing index from ChromaDB
+2026-04-07 13:23:48 | DEBUG    | llamaindex.indexer | get_chroma_collection:44 | ChromaDB collection 'llamaindex_docs' ready | count=11
+2026-04-07 13:23:48 | INFO     | llamaindex.indexer | load_existing_index:95 | Index loaded | vectors in collection=11
+2026-04-07 13:23:48 | INFO     | llamaindex.query_engine | build_query_engine:24 | Building query engine | top_k=5 | similarity_cutoff=0.3
+2026-04-07 13:23:48 | INFO     | llamaindex.query_engine | build_query_engine:43 | Query engine ready
+2026-04-07 13:23:51 | INFO     | langchain.chat_pipeline | _answer_from_documents:79 | Document answer generated | chars=52
+2026-04-07 13:23:51 | DEBUG    | langchain.memory | save_to_memory:28 | Saved to memory | session='default' | total_messages=2
+2026-04-07 13:23:51 | INFO     | langchain.chat_pipeline | chat:48 | Chat complete | session='default' | source=documents
+2026-04-07 13:23:51 | INFO     | guardrails.pipeline | run_output_guards:71 | Running output guards | chars=52
+2026-04-07 13:23:51 | DEBUG    | guardrails.output | check_output:57 | Output guard checking | chars=52
+2026-04-07 13:23:51 | DEBUG    | guardrails.output | check_output:91 | Output guard complete | modified=False | warnings=0
+2026-04-07 13:23:51 | INFO     | middleware.monitoring | log_request:21 | HTTP | POST /chat | status=200 | duration=3017.73ms
+2026-04-07 13:24:15 | INFO     | main | llamaindex_index:208 | LlamaIndex indexing | doc_id=9
+2026-04-07 13:24:15 | INFO     | llamaindex.loader | load_documents_from_db:43 | Loaded document | id=9 | file='Screenshot 2026-01-02 183004.png' | words=576
+2026-04-07 13:24:15 | INFO     | llamaindex.loader | load_documents_from_db:45 | Total documents loaded: 1
+2026-04-07 13:24:15 | INFO     | llamaindex.indexer | build_index:58 | Building LlamaIndex VectorStoreIndex | docs=1
+2026-04-07 13:24:15 | DEBUG    | llamaindex.indexer | get_chroma_collection:44 | ChromaDB collection 'llamaindex_docs' ready | count=11
+2026-04-07 13:24:18 | INFO     | llamaindex.indexer | build_index:71 | VectorStoreIndex built and stored in ChromaDB successfully
+2026-04-07 13:24:18 | INFO     | middleware.monitoring | log_request:21 | HTTP | POST /llamaindex/index | status=200 | duration=3048.87ms
+2026-04-07 13:24:25 | INFO     | main | chat_endpoint:231 | Chat | session='default' | question='what in the screen shot?'
+2026-04-07 13:24:25 | INFO     | guardrails.pipeline | run_input_guards:16 | Running input guards | question='what in the screen shot?'
+2026-04-07 13:24:25 | DEBUG    | guardrails.input | check_input:60 | Input guard checking | chars=24
+2026-04-07 13:24:25 | DEBUG    | guardrails.input | check_input:98 | Input guard passed
+2026-04-07 13:24:25 | DEBUG    | guardrails.topic | is_on_topic:50 | Topic guard: fast pass | keyword='what'
+2026-04-07 13:24:25 | INFO     | guardrails.pipeline | run_input_guards:59 | All input guards passed
+2026-04-07 13:24:25 | INFO     | langchain.chat_pipeline | chat:30 | Chat request | session='default' | question='what in the screen shot?'
+2026-04-07 13:24:25 | DEBUG    | langchain.memory | get_history_as_text:42 | History loaded | session='default' | messages=2
+2026-04-07 13:24:25 | INFO     | langchain.router | should_search_documents:66 | Router: LLM decision='DOCUMENTS' | use_docs=True | question='what in the screen shot?'
+2026-04-07 13:24:25 | INFO     | llamaindex.indexer | load_existing_index:80 | Loading existing index from ChromaDB
+2026-04-07 13:24:25 | DEBUG    | llamaindex.indexer | get_chroma_collection:44 | ChromaDB collection 'llamaindex_docs' ready | count=22
+2026-04-07 13:24:25 | INFO     | llamaindex.indexer | load_existing_index:95 | Index loaded | vectors in collection=22
+2026-04-07 13:24:25 | INFO     | llamaindex.query_engine | build_query_engine:24 | Building query engine | top_k=5 | similarity_cutoff=0.3
+2026-04-07 13:24:25 | INFO     | llamaindex.query_engine | build_query_engine:43 | Query engine ready
+2026-04-07 13:24:26 | INFO     | langchain.chat_pipeline | _answer_from_documents:79 | Document answer generated | chars=169
+2026-04-07 13:24:26 | DEBUG    | langchain.memory | save_to_memory:28 | Saved to memory | session='default' | total_messages=4
+2026-04-07 13:24:26 | INFO     | langchain.chat_pipeline | chat:48 | Chat complete | session='default' | source=documents
+2026-04-07 13:24:26 | INFO     | guardrails.pipeline | run_output_guards:71 | Running output guards | chars=169
+2026-04-07 13:24:26 | DEBUG    | guardrails.output | check_output:57 | Output guard checking | chars=169
+2026-04-07 13:24:26 | DEBUG    | guardrails.output | check_output:91 | Output guard complete | modified=False | warnings=0
+2026-04-07 13:24:26 | INFO     | middleware.monitoring | log_request:21 | HTTP | POST /chat | status=200 | duration=1002.04ms

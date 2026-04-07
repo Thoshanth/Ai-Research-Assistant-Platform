@@ -28,25 +28,43 @@ def extract_text(file_path: str, file_type: str) -> tuple[str, int | None]:
 
 
 def extract_from_pdf(file_path: str) -> tuple[str, int]:
+    """
+    Smart PDF extractor:
+    - Digital PDFs → PyMuPDF (fast, Stage 1 approach)
+    - Scanned PDFs → Vision LLM (new Stage 8 approach)
+
+    The detection is automatic — users don't need to know
+    which type their PDF is.
+    """
+    from backend.multimodal.pdf_scanner import (
+        is_scanned_pdf,
+        extract_text_from_scanned_pdf,
+    )
+
+    # First check if it's a scanned PDF
+    if is_scanned_pdf(file_path):
+        logger.info(f"Scanned PDF detected | routing to vision LLM | file='{file_path}'")
+        text, page_count = extract_text_from_scanned_pdf(file_path)
+        return text, page_count
+
+    # Digital PDF — use original PyMuPDF approach
+    logger.info(f"Digital PDF detected | using PyMuPDF | file='{file_path}'")
     text = ""
     page_count = 0
-    used_fallback = False
 
-    logger.debug(f"Attempting PyMuPDF extraction | file='{file_path}'")
     try:
         doc = fitz.open(file_path)
         page_count = len(doc)
         for i, page in enumerate(doc):
             page_text = page.get_text()
             text += page_text
-            logger.debug(f"Page {i+1}/{page_count} extracted | chars={len(page_text)}")
+            logger.debug(f"Page {i+1}/{page_count} | chars={len(page_text)}")
         doc.close()
     except Exception as e:
-        logger.warning(f"PyMuPDF failed: {e} | will try pdfplumber fallback")
+        logger.warning(f"PyMuPDF failed: {e} | trying pdfplumber")
 
     if len(text.strip()) < 100:
-        logger.warning(f"PyMuPDF yielded insufficient text ({len(text.strip())} chars) | switching to pdfplumber")
-        used_fallback = True
+        logger.warning("Insufficient text — trying pdfplumber fallback")
         try:
             with pdfplumber.open(file_path) as pdf:
                 page_count = len(pdf.pages)
@@ -54,13 +72,10 @@ def extract_from_pdf(file_path: str) -> tuple[str, int]:
                     extracted = page.extract_text()
                     if extracted:
                         text += extracted + "\n"
-            logger.info(f"pdfplumber fallback succeeded | chars={len(text)}")
+            logger.info("pdfplumber fallback succeeded")
         except Exception as e:
             logger.error(f"pdfplumber also failed: {e}", exc_info=True)
             raise
-
-    if used_fallback:
-        logger.warning("Used pdfplumber fallback — PDF may have complex layout or be scanned")
 
     return text, page_count
 

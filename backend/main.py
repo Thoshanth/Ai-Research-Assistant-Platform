@@ -12,9 +12,11 @@ from backend.pipeline.extractor import extract_text
 from backend.pipeline.cleaner import clean_text, get_word_count
 from backend.pipeline.storage import save_document, get_all_documents
 from backend.experiments.compare_embeddings import run_comparison
+from backend.multimodal.image_handler import process_image_file, SUPPORTED_IMAGE_TYPES
 from backend.rag.pipeline import index_document, query_pipeline
 from backend.langchain.chat_pipeline import chat
 from backend.langchain.memory import reset_memory
+from backend.guardrails.pipeline import run_input_guards, run_output_guards
 from backend.agents.agent_pipeline import run_agent
 from backend.llamaindex.loader import load_documents_from_db
 from backend.llamaindex.indexer import build_index
@@ -173,8 +175,24 @@ def index_doc(document_id: int, strategy: str = "recursive"):
 def query_documents(question: str, document_id: int = None, top_k: int = 3):
     """Ask a question. Returns AI answer with source citations."""
     logger.info(f"Query | question='{question[:50]}'")
+
+    # ← INPUT GUARDS
+    run_input_guards(question)
+
     try:
-        return query_pipeline(question, document_id=document_id, top_k=top_k)
+        result = query_pipeline(question, document_id=document_id, top_k=top_k)
+
+        # ← OUTPUT GUARDS (expect citations for RAG)
+        safe = run_output_guards(result["answer"], expect_citations=True)
+        result["answer"] = safe["answer"]
+        result["guardrail_info"] = {
+            "warnings": safe["guardrail_warnings"],
+            "pii_redacted": safe["pii_redacted"],
+            "hallucination_warning": safe["hallucination_warning"],
+        }
+        return result
+    except HTTPException:
+        raise
     except Exception as e:
         logger.error(f"Query failed: {e}", exc_info=True)
         raise HTTPException(500, str(e))
@@ -211,12 +229,31 @@ def chat_endpoint(
 ):
     """Conversational endpoint with memory and automatic routing."""
     logger.info(f"Chat | session='{session_id}' | question='{question[:50]}'")
+
+    # ← INPUT GUARDS
+    run_input_guards(question)
+
     try:
-        return chat(question=question, session_id=session_id, document_id=document_id)
+        result = chat(
+            question=question,
+            session_id=session_id,
+            document_id=document_id,
+        )
+
+        # ← OUTPUT GUARDS
+        safe = run_output_guards(result["answer"])
+        result["answer"] = safe["answer"]
+        result["guardrail_info"] = {
+            "warnings": safe["guardrail_warnings"],
+            "pii_redacted": safe["pii_redacted"],
+            "hallucination_warning": safe["hallucination_warning"],
+        }
+        return result
+    except HTTPException:
+        raise
     except Exception as e:
         logger.error(f"Chat failed: {e}", exc_info=True)
         raise HTTPException(500, str(e))
-
 
 @app.post("/chat/reset", tags=["Stage 4 - Frameworks"])
 def reset_chat(session_id: str = "default"):
@@ -228,7 +265,6 @@ def reset_chat(session_id: str = "default"):
 # ══════════════════════════════════════════════════════════════════
 # STAGE 5 — AI Agent
 # ══════════════════════════════════════════════════════════════════
-
 @app.post("/agent/run", tags=["Stage 5 - Agents"])
 def agent_run(
     question: str,
@@ -236,22 +272,34 @@ def agent_run(
     document_id: int = None,
     show_trace: bool = False,
 ):
-    """
-    Autonomous agent that reasons and picks tools itself.
-    show_trace=true reveals step-by-step thinking.
-    """
+    """Autonomous agent that reasons and picks tools itself."""
     logger.info(f"Agent | question='{question[:50]}' | session='{session_id}'")
+
+    # ← INPUT GUARDS
+    run_input_guards(question)
+
     try:
-        return run_agent(
+        result = run_agent(
             question=question,
             session_id=session_id,
             document_id=document_id,
             show_trace=show_trace,
         )
+
+        # ← OUTPUT GUARDS
+        safe = run_output_guards(result["answer"])
+        result["answer"] = safe["answer"]
+        result["guardrail_info"] = {
+            "warnings": safe["guardrail_warnings"],
+            "pii_redacted": safe["pii_redacted"],
+            "hallucination_warning": safe["hallucination_warning"],
+        }
+        return result
+    except HTTPException:
+        raise
     except Exception as e:
         logger.error(f"Agent failed: {e}", exc_info=True)
         raise HTTPException(500, str(e))
-
 
 # ══════════════════════════════════════════════════════════════════
 # STAGE 6 — Health + Monitoring
@@ -301,4 +349,62 @@ def metrics_summary():
             "health_check": "/health",
             "api_docs": "/docs",
         },
+    }
+
+
+@app.post("/upload/image", tags=["Stage 8 - Multimodal"])
+async def upload_image(file: UploadFile = File(...)):
+    """
+    Upload an image file (JPG, PNG, WEBP).
+
+    The vision LLM will:
+    1. Extract any text visible in the image
+    2. Generate a full description of the image content
+
+    Both are stored and become searchable via /query.
+    Perfect for: photos of documents, screenshots,
+    charts, diagrams, handwritten notes.
+    """
+    logger.info(f"Image upload | file='{file.filename}'")
+
+    extension = file.filename.split(".")[-1].lower()
+    if extension not in SUPPORTED_IMAGE_TYPES:
+        raise HTTPException(
+            400,
+            f"Unsupported image type: {extension}. "
+            f"Supported: {list(SUPPORTED_IMAGE_TYPES.keys())}"
+        )
+
+    # Save image to uploads folder
+    file_path = UPLOAD_DIR / file.filename
+    with open(file_path, "wb") as buffer:
+        shutil.copyfileobj(file.file, buffer)
+
+    logger.info(f"Image saved | path='{file_path}'")
+
+    # Process with vision LLM
+    result = process_image_file(str(file_path))
+
+    # Store in SQLite so it's queryable via RAG
+    doc_id = save_document(
+        filename=file.filename,
+        file_type=extension,
+        page_count=1,
+        word_count=len(result["extracted_text"].split()),
+        file_size_kb=result["file_size_kb"],
+        extracted_text=result["extracted_text"],
+    )
+
+    logger.info(f"Image document stored | doc_id={doc_id}")
+
+    return {
+        "message": "Image processed successfully",
+        "document_id": doc_id,
+        "filename": file.filename,
+        "file_type": extension,
+        "description_preview": result["description"][:200] + "...",
+        "text_extracted_chars": len(result["text_only"]),
+        "word_count": len(result["extracted_text"].split()),
+        "file_size_kb": result["file_size_kb"],
+        "next_step": f"Index this document: POST /index/{doc_id}",
     }

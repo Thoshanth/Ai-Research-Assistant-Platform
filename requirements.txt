@@ -23,3 +23,5 @@ llama-index-llms-openai-like
 rank-bm25   
 prometheus-fastapi-instrumentator
 psutil
+pillow
+pdf2image

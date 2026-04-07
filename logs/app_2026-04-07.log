@@ -72,3 +72,5 @@
 2026-04-07 01:34:05 | INFO     | main | lifespan:35 | ==================================================
 2026-04-07 01:34:05 | INFO     | main | lifespan:37 | Database initialized
 2026-04-07 01:49:42 | INFO     | main | lifespan:39 | Shutting down AI Research Assistant API
+2026-04-07 09:14:15 | INFO     | embeddings.minilm | __init__:12 | Loading MiniLM model...
+2026-04-07 09:14:20 | INFO     | embeddings.minilm | __init__:15 | MiniLM loaded in 5.35s

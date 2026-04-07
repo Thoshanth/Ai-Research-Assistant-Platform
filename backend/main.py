@@ -1,30 +1,79 @@
 import os
-import shutil
 import time
+import shutil
 from pathlib import Path
+from contextlib import asynccontextmanager
 from fastapi import FastAPI, UploadFile, File, HTTPException, Request
+from fastapi.responses import HTMLResponse
+from fastapi.openapi.docs import get_swagger_ui_html
+from prometheus_fastapi_instrumentator import Instrumentator
 from backend.database.db import init_db
 from backend.pipeline.extractor import extract_text
 from backend.pipeline.cleaner import clean_text, get_word_count
 from backend.pipeline.storage import save_document, get_all_documents
-from backend.logger import get_logger
+from backend.experiments.compare_embeddings import run_comparison
 from backend.rag.pipeline import index_document, query_pipeline
 from backend.langchain.chat_pipeline import chat
 from backend.langchain.memory import reset_memory
+from backend.agents.agent_pipeline import run_agent
 from backend.llamaindex.loader import load_documents_from_db
 from backend.llamaindex.indexer import build_index
-from backend.agents.agent_pipeline import run_agent
+from backend.middleware.monitoring import log_request, get_system_stats
+from backend.logger import get_logger
+
 logger = get_logger("main")
 
+UPLOAD_DIR = Path("uploads")
+UPLOAD_DIR.mkdir(exist_ok=True)
+
+
+# ── Lifespan (replaces deprecated @app.on_event) ─────────────────
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    logger.info("=" * 50)
+    logger.info("Starting AI Research Assistant API")
+    logger.info("=" * 50)
+    init_db()
+    logger.info("Database initialized")
+    yield
+    logger.info("Shutting down AI Research Assistant API")
+
+
+# ── App setup ─────────────────────────────────────────────────────
 app = FastAPI(
     title="AI Research Assistant",
     version="0.1.0",
-    docs_url=None,  # disable default docs
+    docs_url=None,
+    lifespan=lifespan,
 )
 
-from fastapi.openapi.docs import get_swagger_ui_html
-from fastapi.responses import HTMLResponse
+# ── Prometheus metrics (auto-instruments all endpoints) ───────────
+Instrumentator().instrument(app).expose(app)
 
+
+# ── Request timing middleware ─────────────────────────────────────
+@app.middleware("http")
+async def timing_middleware(request: Request, call_next):
+    """
+    Runs around every single HTTP request.
+    Measures how long each request takes and logs it.
+    This is how you find slow endpoints.
+    """
+    start = time.time()
+    response = await call_next(request)
+    duration_ms = (time.time() - start) * 1000
+    log_request(
+        method=request.method,
+        path=request.url.path,
+        status_code=response.status_code,
+        duration_ms=duration_ms,
+    )
+    # Add timing header so clients can see latency too
+    response.headers["X-Response-Time-Ms"] = f"{duration_ms:.2f}"
+    return response
+
+
+# ── Custom Swagger UI (fixes blank page issue) ────────────────────
 @app.get("/docs", include_in_schema=False)
 async def custom_swagger_ui():
     return get_swagger_ui_html(
@@ -33,34 +82,27 @@ async def custom_swagger_ui():
         swagger_js_url="https://cdn.jsdelivr.net/npm/swagger-ui-dist@5/swagger-ui-bundle.js",
         swagger_css_url="https://cdn.jsdelivr.net/npm/swagger-ui-dist@5/swagger-ui.css",
     )
-UPLOAD_DIR = Path("uploads")
-UPLOAD_DIR.mkdir(exist_ok=True)
 
-@app.on_event("startup")
-def startup():
-    logger.info("Starting AI Research Assistant API")
-    init_db()
-    logger.info("Database initialized")
 
-@app.post("/upload")
+# ══════════════════════════════════════════════════════════════════
+# STAGE 1 — Document Upload & Processing
+# ══════════════════════════════════════════════════════════════════
+
+@app.post("/upload", tags=["Stage 1 - Ingestion"])
 async def upload_document(file: UploadFile = File(...)):
-    logger.info(f"Upload request received | filename='{file.filename}' | content_type='{file.content_type}'")
-    start = time.time()
-
-    allowed_types = {"pdf", "csv", "txt"}
+    """Upload a PDF, CSV, or TXT file. Extracts and stores text."""
+    logger.info(f"Upload | file='{file.filename}'")
+    allowed = {"pdf", "csv", "txt"}
     extension = file.filename.split(".")[-1].lower()
 
-    if extension not in allowed_types:
-        logger.warning(f"Rejected upload | unsupported type='{extension}' | file='{file.filename}'")
-        raise HTTPException(status_code=400, detail=f"Unsupported file type: {extension}")
+    if extension not in allowed:
+        raise HTTPException(400, f"Unsupported file type: {extension}")
 
     file_path = UPLOAD_DIR / file.filename
     with open(file_path, "wb") as buffer:
         shutil.copyfileobj(file.file, buffer)
-    logger.debug(f"File saved to disk | path='{file_path}'")
 
     file_size_kb = round(os.path.getsize(file_path) / 1024, 2)
-
     raw_text, page_count = extract_text(str(file_path), extension)
     clean = clean_text(raw_text)
     word_count = get_word_count(clean)
@@ -74,9 +116,6 @@ async def upload_document(file: UploadFile = File(...)):
         extracted_text=clean,
     )
 
-    elapsed = round(time.time() - start, 3)
-    logger.info(f"Upload pipeline complete | id={doc_id} | file='{file.filename}' | total_time={elapsed}s")
-
     return {
         "message": "Document processed successfully",
         "document_id": doc_id,
@@ -85,118 +124,112 @@ async def upload_document(file: UploadFile = File(...)):
         "page_count": page_count,
         "word_count": word_count,
         "file_size_kb": file_size_kb,
-        "processing_time_seconds": elapsed,
     }
 
-@app.get("/documents")
+
+@app.get("/documents", tags=["Stage 1 - Ingestion"])
 def list_documents():
-    logger.info("GET /documents called")
+    """List all processed documents."""
     return get_all_documents()
 
-@app.get("/health")
-def health():
-    logger.debug("Health check ping")
-    return {"status": "ok"}
-# Add these imports at the top
 
-# Add these two endpoints at the bottom of main.py
+# ══════════════════════════════════════════════════════════════════
+# STAGE 2 — Embedding Experiments
+# ══════════════════════════════════════════════════════════════════
 
-@app.post("/index/{document_id}")
+@app.post("/experiments/run", tags=["Stage 2 - Experiments"])
+def run_embedding_experiment():
+    """Compare embedding models and log results to MLflow."""
+    logger.info("Embedding experiment triggered")
+    try:
+        results = run_comparison()
+        return {
+            "message": "Experiment complete. Run 'mlflow ui' to view dashboard.",
+            "results": results,
+        }
+    except Exception as e:
+        logger.error(f"Experiment failed: {e}", exc_info=True)
+        raise HTTPException(500, str(e))
+
+
+# ══════════════════════════════════════════════════════════════════
+# STAGE 3 — RAG Pipeline
+# ══════════════════════════════════════════════════════════════════
+
+@app.post("/index/{document_id}", tags=["Stage 3 - RAG"])
 def index_doc(document_id: int, strategy: str = "recursive"):
-    """
-    Chunks, embeds, and stores a document in ChromaDB.
-    Run this once per document before querying.
-    
-    strategy options: 'fixed', 'recursive', 'semantic'
-    """
+    """Chunk, embed and store a document in ChromaDB for RAG."""
     logger.info(f"Index request | doc_id={document_id} | strategy={strategy}")
     try:
-        result = index_document(document_id, strategy=strategy)
-        return result
+        return index_document(document_id, strategy=strategy)
     except ValueError as e:
-        raise HTTPException(status_code=404, detail=str(e))
+        raise HTTPException(404, str(e))
     except Exception as e:
         logger.error(f"Indexing failed: {e}", exc_info=True)
-        raise HTTPException(status_code=500, detail=str(e))
+        raise HTTPException(500, str(e))
 
 
-@app.post("/query")
+@app.post("/query", tags=["Stage 3 - RAG"])
 def query_documents(question: str, document_id: int = None, top_k: int = 3):
-    """
-    Ask a question. Returns an AI-generated answer with source citations.
-    
-    document_id: optional — filter to only search within one document
-    top_k: how many chunks to use as context (default 3)
-    """
-    logger.info(f"Query request | question='{question[:50]}' | doc_id={document_id}")
+    """Ask a question. Returns AI answer with source citations."""
+    logger.info(f"Query | question='{question[:50]}'")
     try:
-        result = query_pipeline(question, document_id=document_id, top_k=top_k)
-        return result
+        return query_pipeline(question, document_id=document_id, top_k=top_k)
     except Exception as e:
         logger.error(f"Query failed: {e}", exc_info=True)
-        raise HTTPException(status_code=500, detail=str(e))
-@app.post("/chat")
+        raise HTTPException(500, str(e))
+
+
+# ══════════════════════════════════════════════════════════════════
+# STAGE 4 — LlamaIndex + Conversation Memory
+# ══════════════════════════════════════════════════════════════════
+
+@app.post("/llamaindex/index", tags=["Stage 4 - Frameworks"])
+def llamaindex_index(document_id: int = None):
+    """Index documents into LlamaIndex's ChromaDB collection."""
+    logger.info(f"LlamaIndex indexing | doc_id={document_id}")
+    try:
+        documents = load_documents_from_db(document_id=document_id)
+        if not documents:
+            raise HTTPException(404, "No documents found in database")
+        index = build_index(documents)
+        return {
+            "message": "Indexed into LlamaIndex successfully",
+            "documents_indexed": len(documents),
+            "filenames": [d.metadata["filename"] for d in documents],
+        }
+    except Exception as e:
+        logger.error(f"LlamaIndex indexing failed: {e}", exc_info=True)
+        raise HTTPException(500, str(e))
+
+
+@app.post("/chat", tags=["Stage 4 - Frameworks"])
 def chat_endpoint(
     question: str,
     session_id: str = "default",
     document_id: int = None,
 ):
-    """
-    Conversational endpoint with memory.
-    Remembers previous questions in the same session.
-    Routes automatically between document search and general knowledge.
-
-    session_id: use same value across turns to maintain conversation.
-    """
-    logger.info(f"Chat endpoint | session='{session_id}' | question='{question[:50]}'")
+    """Conversational endpoint with memory and automatic routing."""
+    logger.info(f"Chat | session='{session_id}' | question='{question[:50]}'")
     try:
-        result = chat(
-            question=question,
-            session_id=session_id,
-            document_id=document_id,
-        )
-        return result
+        return chat(question=question, session_id=session_id, document_id=document_id)
     except Exception as e:
         logger.error(f"Chat failed: {e}", exc_info=True)
-        raise HTTPException(status_code=500, detail=str(e))
+        raise HTTPException(500, str(e))
 
 
-@app.post("/chat/reset")
+@app.post("/chat/reset", tags=["Stage 4 - Frameworks"])
 def reset_chat(session_id: str = "default"):
-    """
-    Clears conversation memory for a session.
-    Call this when the user wants to start a fresh conversation.
-    """
+    """Clear conversation memory for a session."""
     reset_memory(session_id)
-    logger.info(f"Memory reset | session='{session_id}'")
-    return {"message": f"Conversation memory cleared for session '{session_id}'"}
-# add this import at the top with other imports
+    return {"message": f"Memory cleared for session '{session_id}'"}
 
 
-@app.post("/llamaindex/index")
-def llamaindex_index(document_id: int = None):
-    """
-    Indexes documents into LlamaIndex's ChromaDB collection.
-    Different from /index which uses the Stage 3 manual pipeline.
-    
-    document_id: optional — index one doc, or leave empty to index ALL docs
-    """
-    logger.info(f"LlamaIndex indexing | doc_id={document_id}")
-    try:
-        documents = load_documents_from_db(document_id=document_id)
-        if not documents:
-            raise HTTPException(status_code=404, detail="No documents found in database")
-        
-        index = build_index(documents)
-        return {
-            "message": "Documents indexed into LlamaIndex successfully",
-            "documents_indexed": len(documents),
-            "filenames": [doc.metadata["filename"] for doc in documents],
-        }
-    except Exception as e:
-        logger.error(f"LlamaIndex indexing failed: {e}", exc_info=True)
-        raise HTTPException(status_code=500, detail=str(e))
-@app.post("/agent/run")
+# ══════════════════════════════════════════════════════════════════
+# STAGE 5 — AI Agent
+# ══════════════════════════════════════════════════════════════════
+
+@app.post("/agent/run", tags=["Stage 5 - Agents"])
 def agent_run(
     question: str,
     session_id: str = "default",
@@ -204,22 +237,68 @@ def agent_run(
     show_trace: bool = False,
 ):
     """
-    Autonomous AI agent that decides what tools to use.
-
-    Unlike /query which always does RAG, the agent reasons
-    about your question and picks the right approach itself.
-
-    show_trace=true shows you the agent's step-by-step thinking.
+    Autonomous agent that reasons and picks tools itself.
+    show_trace=true reveals step-by-step thinking.
     """
-    logger.info(f"Agent endpoint | question='{question[:50]}' | session='{session_id}'")
+    logger.info(f"Agent | question='{question[:50]}' | session='{session_id}'")
     try:
-        result = run_agent(
+        return run_agent(
             question=question,
             session_id=session_id,
             document_id=document_id,
             show_trace=show_trace,
         )
-        return result
     except Exception as e:
         logger.error(f"Agent failed: {e}", exc_info=True)
-        raise HTTPException(status_code=500, detail=str(e))
+        raise HTTPException(500, str(e))
+
+
+# ══════════════════════════════════════════════════════════════════
+# STAGE 6 — Health + Monitoring
+# ══════════════════════════════════════════════════════════════════
+
+@app.get("/health", tags=["Stage 6 - Monitoring"])
+def health():
+    """
+    Enhanced health check.
+    Returns system stats so you can monitor resource usage.
+    Monitoring tools ping this every 30 seconds.
+    """
+    stats = get_system_stats()
+    db_ok = True
+    try:
+        docs = get_all_documents()
+        doc_count = len(docs)
+    except Exception:
+        db_ok = False
+        doc_count = 0
+
+    status = "healthy" if db_ok else "degraded"
+    logger.debug(f"Health check | status={status} | cpu={stats['cpu_percent']}%")
+
+    return {
+        "status": status,
+        "version": "0.1.0",
+        "database": "ok" if db_ok else "error",
+        "documents_stored": doc_count,
+        "system": stats,
+    }
+
+
+@app.get("/metrics/summary", tags=["Stage 6 - Monitoring"])
+def metrics_summary():
+    """
+    Returns a human-readable summary of app metrics.
+    For detailed Prometheus metrics go to GET /metrics
+    """
+    stats = get_system_stats()
+    docs = get_all_documents()
+    return {
+        "total_documents": len(docs),
+        "system_resources": stats,
+        "endpoints": {
+            "prometheus_metrics": "/metrics",
+            "health_check": "/health",
+            "api_docs": "/docs",
+        },
+    }

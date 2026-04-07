@@ -1,0 +1,44 @@
+version: "3.9"
+
+services:
+
+  # ── FastAPI Application ──────────────────────────────
+  api:
+    build: .
+    container_name: ai_research_api
+    ports:
+      - "8000:8000"
+    environment:
+      - GROQ_API_KEY=${GROQ_API_KEY}
+      - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY}
+    volumes:
+      # Mount these folders so data persists when container restarts
+      - ./uploads:/app/uploads
+      - ./chroma_db:/app/chroma_db
+      - ./logs:/app/logs
+      - ./research_assistant.db:/app/research_assistant.db
+    depends_on:
+      - mlflow
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # ── MLflow Tracking Server ───────────────────────────
+  mlflow:
+    image: python:3.11-slim
+    container_name: mlflow_server
+    ports:
+      - "5000:5000"
+    command: >
+      bash -c "pip install mlflow &&
+               mlflow server
+               --host 0.0.0.0
+               --port 5000
+               --backend-store-uri sqlite:///mlflow.db
+               --default-artifact-root /mlflow/artifacts"
+    volumes:
+      - ./mlflow_data:/mlflow
+    restart: unless-stopped

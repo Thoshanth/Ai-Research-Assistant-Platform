@@ -577,3 +577,29 @@
 2026-04-07 17:19:28 | INFO     | main | explore_graph_endpoint:485 | Graph explore | doc_id=7
 2026-04-07 17:19:28 | INFO     | graphrag.store | load_graph:82 | Graph loaded | nodes=18 | edges=17 | doc_id=7
 2026-04-07 17:19:28 | INFO     | middleware.monitoring | log_request:21 | HTTP | GET /graphrag/explore | status=200 | duration=5.98ms
+2026-04-07 17:22:21 | INFO     | embeddings.minilm | __init__:12 | Loading MiniLM model...
+2026-04-07 17:22:25 | INFO     | embeddings.minilm | __init__:15 | MiniLM loaded in 3.97s
+2026-04-07 17:22:34 | INFO     | main | lifespan:40 | ==================================================
+2026-04-07 17:22:34 | INFO     | main | lifespan:41 | Starting AI Research Assistant API
+2026-04-07 17:22:34 | INFO     | main | lifespan:42 | ==================================================
+2026-04-07 17:22:34 | INFO     | main | lifespan:44 | Database initialized
+2026-04-07 17:22:50 | ERROR    | middleware.monitoring | log_request:23 | HTTP | GET / | status=404 | duration=3.43ms
+2026-04-07 17:23:00 | INFO     | middleware.monitoring | log_request:21 | HTTP | GET /docs | status=200 | duration=1.29ms
+2026-04-07 17:23:00 | INFO     | middleware.monitoring | log_request:21 | HTTP | GET /openapi.json | status=200 | duration=13.20ms
+2026-04-07 17:23:42 | INFO     | main | build_graph_endpoint:430 | GraphRAG build | doc_id=7
+2026-04-07 17:23:42 | INFO     | graphrag.pipeline | build_knowledge_graph:28 | Building knowledge graph | doc_id=7
+2026-04-07 17:23:42 | INFO     | graphrag.pipeline | build_knowledge_graph:43 | Loaded document | file='RESUME.pdf' | chars=1320
+2026-04-07 17:23:42 | INFO     | rag.chunker | chunk_text:138 | Chunking with strategy='recursive'
+2026-04-07 17:23:42 | INFO     | rag.chunker | recursive_chunker:74 | Recursive chunking | chunks=1 | strategy=paragraph→sentence→word
+2026-04-07 17:23:42 | INFO     | graphrag.pipeline | build_knowledge_graph:49 | Processing 1 chunks for entity extraction
+2026-04-07 17:23:42 | INFO     | graphrag.extractor | extract_from_chunks:107 | Extracting chunk 1/1
+2026-04-07 17:23:42 | DEBUG    | graphrag.extractor | extract_entities_and_relations:32 | Extracting entities | text_chars=1320
+2026-04-07 17:23:44 | INFO     | graphrag.extractor | extract_entities_and_relations:80 | Extraction complete | entities=18 | relations=17
+2026-04-07 17:23:44 | INFO     | graphrag.extractor | extract_from_chunks:133 | Merged extraction | unique_entities=18 | total_relations=17
+2026-04-07 17:23:44 | INFO     | graphrag.store | build_graph:49 | Graph built | nodes=18 | edges=17 | doc_id=7
+2026-04-07 17:23:44 | INFO     | graphrag.store | save_graph:65 | Graph saved | path='graph_data\graph_doc_7.json'
+2026-04-07 17:23:44 | INFO     | graphrag.pipeline | build_knowledge_graph:62 | Knowledge graph complete | nodes=18 | edges=17
+2026-04-07 17:23:44 | INFO     | middleware.monitoring | log_request:21 | HTTP | POST /graphrag/build/7 | status=200 | duration=2130.78ms
+2026-04-07 17:23:50 | INFO     | main | explore_graph_endpoint:485 | Graph explore | doc_id=7
+2026-04-07 17:23:50 | INFO     | graphrag.store | load_graph:82 | Graph loaded | nodes=18 | edges=17 | doc_id=7
+2026-04-07 17:23:50 | INFO     | middleware.monitoring | log_request:21 | HTTP | GET /graphrag/explore | status=200 | duration=10.69ms

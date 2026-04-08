@@ -12,6 +12,7 @@ from backend.pipeline.extractor import extract_text
 from backend.pipeline.cleaner import clean_text, get_word_count
 from backend.multiagent.pipeline import run_multiagent
 from backend.pipeline.storage import save_document, get_all_documents
+from fastapi.middleware.cors import CORSMiddleware
 from backend.experiments.compare_embeddings import run_comparison
 from backend.multimodal.image_handler import process_image_file, SUPPORTED_IMAGE_TYPES
 from backend.rag.pipeline import index_document, query_pipeline
@@ -53,6 +54,14 @@ app = FastAPI(
     version="0.1.0",
     docs_url=None,
     lifespan=lifespan,
+)
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:3000"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
 
 # ── Prometheus metrics (auto-instruments all endpoints) ───────────

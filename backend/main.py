@@ -10,6 +10,7 @@ from prometheus_fastapi_instrumentator import Instrumentator
 from backend.database.db import init_db
 from backend.pipeline.extractor import extract_text
 from backend.pipeline.cleaner import clean_text, get_word_count
+from backend.multiagent.pipeline import run_multiagent
 from backend.pipeline.storage import save_document, get_all_documents
 from backend.experiments.compare_embeddings import run_comparison
 from backend.multimodal.image_handler import process_image_file, SUPPORTED_IMAGE_TYPES
@@ -489,4 +490,59 @@ def explore_graph_endpoint(document_id: int):
         raise HTTPException(404, str(e))
     except Exception as e:
         logger.error(f"Graph explore failed: {e}", exc_info=True)
+        raise HTTPException(500, str(e))
+    
+# ══════════════════════════════════════════════════════════════════
+# STAGE 10 — Multi-Agent System
+# ══════════════════════════════════════════════════════════════════
+
+@app.post("/multiagent/run", tags=["Stage 10 - Multi-Agent"])
+def multiagent_run(
+    question: str,
+    session_id: str = "default",
+    document_id: int = None,
+    max_iterations: int = 3,
+    show_agent_trace: bool = False,
+):
+    """
+    Three-agent collaborative research system.
+
+    Agent 1 — Researcher: finds information via RAG + GraphRAG
+    Agent 2 — Analyst: performs deep analysis of findings
+    Agent 3 — Critic: evaluates quality, approves or rejects
+
+    If rejected, Researcher searches again with specific feedback.
+    Loop continues until approved or max_iterations reached.
+
+    show_agent_trace=true reveals each agent's full output.
+    """
+    logger.info(
+        f"Multi-agent | question='{question[:50]}' | "
+        f"session='{session_id}'"
+    )
+
+    # Input guards apply to multi-agent too
+    run_input_guards(question)
+
+    try:
+        result = run_multiagent(
+            question=question,
+            session_id=session_id,
+            document_id=document_id,
+            max_iterations=max_iterations,
+            show_agent_trace=show_agent_trace,
+        )
+
+        # Output guards on final answer
+        safe = run_output_guards(result["answer"])
+        result["answer"] = safe["answer"]
+        result["guardrail_info"] = {
+            "warnings": safe["guardrail_warnings"],
+            "pii_redacted": safe["pii_redacted"],
+        }
+
+        return result
+
+    except Exception as e:
+        logger.error(f"Multi-agent failed: {e}", exc_info=True)
         raise HTTPException(500, str(e))

@@ -1,4 +1,4 @@
-markdown# 🔬 AI Research Assistant Platform
+🔬 AI Research Assistant Platform
 
 A production-grade AI engineering project built stage by stage — from raw document ingestion to multi-agent collaboration. This platform demonstrates every core skill required for an AI Engineer role in 2025.
 
